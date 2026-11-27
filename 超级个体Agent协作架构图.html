@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>超级个体 Agent 协作系统 · 第一性原理架构图</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◈</text></link>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  :root{
+    --bg:#0b0f17;
+    --bg-2:#111827;
+    --line:#1f2937;
+    --line-2:#334155;
+    --text:#e5e7eb;
+    --text-dim:#94a3b8;
+    --text-mute:#64748b;
+    --c-host:#38bdf8;     /* L0 管家 青 */
+    --c-l1:#a78bfa;       /* L1 业务 紫 */
+    --c-l2:#fbbf24;       /* L2 任务 琥珀 */
+    --c-base:#34d399;     /* 底座 绿 */
+    --c-ext:#f472b6;      /* 外部 粉 */
+    --c-risk:#f87171;     /* 风险 红 */
+    --c-safe:#4ade80;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',system-ui,sans-serif;line-height:1.6}
+  body{
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56,189,248,.08), transparent),
+      radial-gradient(ellipse 60% 40% at 90% 100%, rgba(167,139,250,.06), transparent);
+    min-height:100vh;
+  }
+  .mono{font-family:'JetBrains Mono',monospace}
+  .wrap{max-width:1280px;margin:0 auto;padding:48px 32px 96px}
+
+  /* ===== Header ===== */
+  header{margin-bottom:56px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.2em;color:var(--c-host);text-transform:uppercase;margin-bottom:16px}
+  h1{font-size:40px;font-weight:900;letter-spacing:-.02em;line-height:1.2;margin-bottom:20px}
+  h1 .accent{color:var(--c-host)}
+  .origin{
+    border-left:2px solid var(--c-host);
+    padding:16px 24px;
+    background:rgba(56,189,248,.04);
+    max-width:820px;
+  }
+  .origin .label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--c-host);letter-spacing:.15em;margin-bottom:6px}
+  .origin p{font-size:16px;color:var(--text);}
+  .origin p strong{color:#fff}
+
+  /* ===== Section title ===== */
+  .sec{margin-top:72px}
+  .sec-title{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text-mute)}
+  .sec-title h2{font-size:24px;font-weight:700;letter-spacing:-.01em}
+  .sec-sub{color:var(--text-dim);font-size:14px;margin-bottom:28px;max-width:760px}
+
+  /* ===== Architecture layers ===== */
+  .arch{
+    border:1px solid var(--line);
+    background:linear-gradient(180deg, rgba(17,24,39,.6), rgba(11,15,23,.6));
+    padding:28px;
+    position:relative;
+  }
+  .layer{
+    display:grid;
+    grid-template-columns:120px 1fr;
+    gap:20px;
+    padding:20px 0;
+    border-bottom:1px dashed var(--line);
+    position:relative;
+  }
+  .layer:last-child{border-bottom:none}
+  .layer-tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:.15em;
+    padding-top:4px;
+  }
+  .layer-tag .lvl{display:block;font-size:18px;font-weight:700;letter-spacing:0;margin-bottom:2px}
+  .layer-body{min-width:0}
+
+  /* human layer */
+  .layer-human .lvl{color:#fff}
+  .layer-host .lvl{color:var(--c-host)}
+  .layer-l1 .lvl{color:var(--c-l1)}
+  .layer-l2 .lvl{color:var(--c-l2)}
+  .layer-base .lvl{color:var(--c-base)}
+  .layer-ext .lvl{color:var(--c-ext)}
+
+  .cards{display:grid;gap:12px}
+  .cards.c4{grid-template-columns:repeat(4,1fr)}
+  .cards.c5{grid-template-columns:repeat(5,1fr)}
+  .cards.c2{grid-template-columns:1.4fr 1fr}
+
+  .card{
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.02);
+    padding:14px 16px;
+    transition:all .2s;
+  }
+  .card:hover{border-color:var(--line-2);background:rgba(255,255,255,.04)}
+  .card .name{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+  .card .desc{font-size:12px;color:var(--text-dim);line-height:1.5}
+  .card .dot{width:6px;height:6px;border-radius:50%;flex:none}
+
+  /* human special */
+  .human-card{
+    border:1px solid rgba(255,255,255,.2);
+    background:linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    padding:18px 22px;
+  }
+  .human-card .name{font-size:18px;font-weight:900;margin-bottom:6px}
+  .human-card .acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .human-card .acts span{
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    border:1px solid var(--line-2);padding:2px 10px;color:var(--text-dim)
+  }
+
+  /* connector arrows between layers */
+  .arrow-row{
+    display:flex;justify-content:center;align-items:center;gap:24px;
+    padding:6px 0;
+    color:var(--text-mute);
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;
+  }
+  .arrow-row .arr{color:var(--c-host)}
+
+  /* ===== Mode compare ===== */
+  .modes{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .mode{
+    border:1px solid var(--line);
+    padding:24px;
+    position:relative;
+  }
+  .mode.side{border-top:2px solid var(--c-safe)}
+  .mode.auto{border-top:2px solid var(--c-l2)}
+  .mode h3{font-size:18px;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+  .mode .badge{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;padding:2px 8px}
+  .mode.side .badge{background:rgba(74,222,128,.12);color:var(--c-safe)}
+  .mode.auto .badge{background:rgba(251,191,36,.12);color:var(--c-l2)}
+  .mode p.def{font-size:13px;color:var(--text-dim);margin:10px 0 16px}
+  .mode ul{list-style:none}
+  .mode li{font-size:13px;padding:6px 0;border-bottom:1px dashed var(--line);display:flex;gap:10px}
+  .mode li:last-child{border-bottom:none}
+  .mode li::before{content:"▸";color:var(--text-mute);flex:none}
+
+  /* ===== Risk matrix ===== */
+  .risk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .risk{border:1px solid var(--line);padding:18px;position:relative}
+  .risk .lvl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.15em;margin-bottom:8px}
+  .risk h4{font-size:15px;margin-bottom:8px}
+  .risk p{font-size:12px;color:var(--text-dim);margin-bottom:10px}
+  .risk .mode-tag{
+    display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;
+    padding:2px 8px;letter-spacing:.1em;
+  }
+  .r1{border-top:2px solid var(--c-risk)}
+  .r1 .lvl{color:var(--c-risk)} .r1 .mode-tag{background:rgba(248,113,113,.12);color:var(--c-risk)}
+  .r2{border-top:2px solid var(--c-l2)}
+  .r2 .lvl{color:var(--c-l2)} .r2 .mode-tag{background:rgba(251,191,36,.12);color:var(--c-l2)}
+  .r3{border-top:2px solid var(--c-safe)}
+  .r3 .lvl{color:var(--c-safe)} .r3 .mode-tag{background:rgba(74,222,128,.12);color:var(--c-safe)}
+  .r4{border-top:2px solid var(--text-mute)}
+  .r4 .lvl{color:var(--text-mute)} .r4 .mode-tag{background:rgba(148,163,184,.12);color:var(--text-dim)}
+
+  /* ===== Collaboration flow ===== */
+  .flow{
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.015);
+    padding:28px;
+    overflow-x:auto;
+  }
+  .flow-steps{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:0;
+    min-width:900px;
+    position:relative;
+  }
+  .step{padding:0 10px;position:relative}
+  .step::after{
+    content:"→";
+    position:absolute;right:-8px;top:20px;
+    color:var(--c-host);font-family:'JetBrains Mono',monospace;
+    font-size:16px;
+  }
+  .step:last-child::after{display:none}
+  .step .num{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-mute);
+    margin-bottom:8px;
+  }
+  .step .actor{
+    font-size:11px;letter-spacing:.1em;padding:2px 8px;display:inline-block;margin-bottom:10px;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .step h5{font-size:14px;margin-bottom:6px;line-height:1.4}
+  .step p{font-size:11.5px;color:var(--text-dim);line-height:1.5}
+  .a-host{background:rgba(56,189,248,.12);color:var(--c-host)}
+  .a-l1{background:rgba(167,139,250,.12);color:var(--c-l1)}
+  .a-l2{background:rgba(251,191,36,.12);color:var(--c-l2)}
+  .a-human{background:rgba(255,255,255,.12);color:#fff}
+  .a-base{background:rgba(52,211,153,.12);color:var(--c-base)}
+
+  /* ===== L2 tree ===== */
+  .tree{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+  }
+  .tree-node{
+    border:1px solid var(--line);
+    padding:18px;
+    position:relative;
+  }
+  .tree-node .lvl-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;color:var(--c-l2);margin-bottom:8px}
+  .tree-node h4{font-size:16px;margin-bottom:8px}
+  .tree-node p{font-size:12px;color:var(--text-dim);margin-bottom:10px}
+  .tree-node ul{list-style:none;font-size:11.5px;color:var(--text-dim)}
+  .tree-node li{padding:3px 0;padding-left:14px;position:relative}
+  .tree-node li::before{content:"·";position:absolute;left:4px;color:var(--c-l2)}
+
+  /* ===== Outputs ===== */
+  .out-meta{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;
+  }
+  .out-meta .m{
+    border:1px dashed var(--line-2);
+    padding:12px 14px;font-size:12px;color:var(--text-dim);
+  }
+  .out-meta .m b{color:var(--text);font-family:'JetBrains Mono',monospace;font-weight:600}
+
+  /* footer */
+  footer{margin-top:80px;padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;color:var(--text-mute);font-size:12px;font-family:'JetBrains Mono',monospace}
+
+  /* responsive */
+  @media (max-width:900px){
+    .wrap{padding:32px 20px 64px}
+    h1{font-size:28px}
+    .layer{grid-template-columns:1fr;gap:8px}
+    .cards.c4,.cards.c5,.risk-grid,.tree{grid-template-columns:1fr 1fr}
+    .modes,.cards.c2{grid-template-columns:1fr}
+  }
+  @media (max-width:560px){
+    .cards.c4,.cards.c5,.risk-grid,.tree,.out-meta{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HEADER / 第一性原理 ===== -->
+  <header>
+    <div class="eyebrow">FIRST PRINCIPLES · ARCHITECTURE BLUEPRINT</div>
+    <h1>超级个体的 <span class="accent">Agent 协作系统</span><br>不是一个大模型，而是一支分层数字团队</h1>
+    <div class="origin">
+      <div class="label">◆ 第一性原点</div>
+      <p>超级个体唯一不可再生的资源是 <strong>注意力</strong>。
+      系统全部目标：把注意力只投在 <strong>高价值决策与核心专业交付</strong>，其余工作按风险等级分流给 Agent；
+      自动化不是越自动越好，而是 <strong>主人自主选择每一类任务的信任等级</strong>。</p>
+    </div>
+  </header>
+
+  <!-- ===== 01 主架构分层 ===== -->
+  <section class="sec">
+    <div class="sec-title">
+      <span class="sec-num">01</span>
+      <h2>三层 Agent 协作架构 · 总览</h2>
+    </div>
+    <p class="sec-sub">自上而下：主人下达意图 → L0 管家调度风控 → L1 业务专家生成方案 → L2 任务实例跟踪执行 → 共享底座提供唯一可信数据源 → 外部触点受控触达。</p>
+
+    <div class="arch">
+
+      <!-- Human -->
+      <div class="layer layer-human">
+        <div class="layer-tag">
+          <span class="lvl">YOU</span>
+          <span style="color:var(--text-mute)">唯一决策者</span>
+        </div>
+        <div class="layer-body">
+          <div class="human-card">
+            <div class="name">超级个体（所有者）</div>
+            <div style="font-size:13px;color:var(--text-dim)">不写流程、不回重复消息、不做琐事——只做终审、拍板、补充事实。</div>
+            <div class="acts">
+              <span>下达指令</span><span>审核</span><span>配置围栏</span><span>熔断</span><span>验收里程碑</span><span>接收简报</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-row"><span>▼ 指令 / 审核结果 / 熔断信号</span></div>
+
+      <!-- L0 -->
+      <div class="layer layer-host">
+        <div class="layer-tag">
+          <span class="lvl">L0</span>
+          <span>主控调度层</span>
+        </div>
+        <div class="layer-body">
+          <div class="card" style="border-color:rgba(56,189,248,.3)">
+            <div class="name"><span class="dot" style="background:var(--c-host)"></span>管家 Agent（全局唯一）</div>
+            <div class="desc">
+              意图识别 · 风险分级 T1/T2/T3 · 围栏校验 · 模式调度 · 任务路由 · 审核队列 · 全局熔断 · 日志聚合 · 简报合成。
+              <strong style="color:var(--c-host)">只做调度与风控，不做业务内容生成。</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-row"><span class="arr">▼</span><span>下发上下文快照 + 权限约束</span><span class="arr">▲</span><span>回传方案 / 产出草稿</span></div>
+
+      <!-- L1 -->
+      <div class="layer layer-l1">
+        <div class="layer-tag">
+          <span class="lvl">L1</span>
+          <span>业务能力层</span>
+        </div>
+        <div class="layer-body">
+          <div class="cards c4">
+            <div class="card">
+              <div class="name"><span class="dot" style="background:var(--c-l1)"></span>客户 Agent</div>
+              <div class="desc">线索结构化 · 客户档案 · 跟进 SOP · FAQ 应答 · 标签分层</div>
+            </div>
+            <div class="card">
+              <div class="name"><span class="dot" style="background:var(--c-l1)"></span>项目 Agent</div>
+              <div class="desc">需求拆解 · 项目/里程碑/迭代规划 · 节点计算 · 进度摘要</div>
+            </div>
+            <div class="card">
+              <div class="name"><span class="dot" style="background:var(--c-l1)"></span>内容 Agent</div>
+              <div class="desc">选题衍生 · 多体裁改写 · 脚本文案 · 风格对齐 · 敏感词自检</div>
+            </div>
+            <div class="card">
+              <div class="name"><span class="dot" style="background:var(--c-l1)"></span>事务 Agent</div>
+              <div class="desc">语音纪要 · 日程待办 · 邮件初稿 · 冲突校验</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-row"><span class="arr">▼</span><span>实例化为可跟踪任务树</span></div>
+
+      <!-- L2 -->
+      <div class="layer layer-l2">
+        <div class="layer-tag">
+          <span class="lvl">L2</span>
+          <span>任务执行层</span>
+        </div>
+        <div class="layer-body">
+          <div class="cards c4">
+            <div class="card" style="border-color:rgba(251,191,36,.25)">
+              <div class="name"><span class="dot" style="background:var(--c-l2)"></span>项目 Project</div>
+              <div class="desc">客户交付 / IP 项目；终验强制陪跑</div>
+            </div>
+            <div class="card" style="border-color:rgba(251,191,36,.25)">
+              <div class="name"><span class="dot" style="background:var(--c-l2)"></span>里程碑 Milestone</div>
+              <div class="desc">阶段关口；必须验收，不通过则阻塞后续</div>
+            </div>
+            <div class="card" style="border-color:rgba(251,191,36,.25)">
+              <div class="name"><span class="dot" style="background:var(--c-l2)"></span>迭代 Iteration</div>
+              <div class="desc">1–3 天短时间盒；启动简报 / 收尾小结</div>
+            </div>
+            <div class="card" style="border-color:rgba(251,191,36,.25)">
+              <div class="name"><span class="dot" style="background:var(--c-l2)"></span>原子任务 Task</div>
+              <div class="desc">最小执行单元；绑定产出物、T 等级、模式、依赖</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-row"><span class="arr">▲▼</span><span>读写 · 唯一可信数据源</span></div>
+
+      <!-- Base -->
+      <div class="layer layer-base">
+        <div class="layer-tag">
+          <span class="lvl">DB</span>
+          <span>共享底座</span>
+        </div>
+        <div class="layer-body">
+          <div class="cards c4">
+            <div class="card">
+              <div class="name" style="color:var(--c-base)">事实库</div>
+              <div class="desc">知识库 · 客户档案 · 项目资料 · 偏好模板；Agent 回答的唯一锚点，无信息则如实告知</div>
+            </div>
+            <div class="card">
+              <div class="name" style="color:var(--c-base)">围栏规则库</div>
+              <div class="desc">场景权限 · 阈值 · 时段 · 禁止动作；全自动的保险丝</div>
+            </div>
+            <div class="card">
+              <div class="name" style="color:var(--c-base)">日志库</div>
+              <div class="desc">所有 Agent 动作、模式、围栏触发、审核记录全留痕</div>
+            </div>
+            <div class="card">
+              <div class="name" style="color:var(--c-base)">产出物仓库</div>
+              <div class="desc">草稿 / 已审核 / 已发送 / 驳回；版本化、可溯源、可回滚</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-row"><span class="arr">▼</span><span>外部触出必须经 L0 围栏校验</span><span class="arr">▲</span><span>事件回流</span></div>
+
+      <!-- External -->
+      <div class="layer layer-ext">
+        <div class="layer-tag">
+          <span class="lvl">OUT</span>
+          <span>外部触点</span>
+        </div>
+        <div class="layer-body">
+          <div class="card" style="border-color:rgba(244,114,182,.25)">
+            <div class="name" style="color:var(--c-ext)">微信 / 邮箱 / 日历 / 云文档 / 内容平台</div>
+            <div class="desc">外部事件单向流入；对外发送动作强制经过 L0 管家围栏校验，T1 类永远进审核队列。</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 02 双模式 ===== -->
+  <section class="sec">
+    <div class="sec-title">
+      <span class="sec-num">02</span>
+      <h2>双运行模式 · 陪跑 vs 全自动</h2>
+    </div>
+    <p class="sec-sub">全局默认陪跑；主人对低风险场景单独授权全自动。任何时候一键熔断，全部退回陪跑。</p>
+    <div class="modes">
+      <div class="mode side">
+        <h3>陪跑模式 <span class="badge">默认安全</span></h3>
+        <p class="def">Agent 整理、起草、建议、提醒；所有对外输出与关键变更必须主人确认。</p>
+        <ul>
+          <li>生成初稿 / 方案 / 摘要，全部进审核队列</li>
+          <li>不主动对外发送消息</li>
+          <li>不修改核心业务数据</li>
+          <li>里程碑验收、报价、合同永远走这里</li>
+          <li>是训练 Agent 的过程：主人的每次修改都在沉淀事实库</li>
+        </ul>
+      </div>
+      <div class="mode auto">
+        <h3>全自动模式 <span class="badge">受控信任</span></h3>
+        <p class="def">围栏内自主执行，事后知会；出圈立刻降级为陪跑并告警。</p>
+        <ul>
+          <li>先配围栏规则，没围栏不能开</li>
+          <li>范围 / 否决 / 时间 / 阈值四类规则</li>
+          <li>动作留日志，可一键回滚</li>
+          <li>典型场景：自动建档、打标签、归档、节点提醒</li>
+          <li>支持全局开关 + 单场景授权 + 紧急熔断三级控制</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 03 任务风险分级 ===== -->
+  <section class="sec">
+    <div class="sec-title">
+      <span class="sec-num">03</span>
+      <h2>任务风险分级 · 决定执行模式</h2>
+    </div>
+    <p class="sec-sub">L0 管家在任务生成时自动打 T 标签，标签是调度的第一判断依据。</p>
+    <div class="risk-grid">
+      <div class="risk r1">
+        <div class="lvl">T1 · HIGH</div>
+        <h4>高风险不可逆</h4>
+        <p>报价、合同、服务范围变更、承诺交付周期、核心方案定稿、重要合作邀约</p>
+        <span class="mode-tag">强制陪跑 · 禁止全自动</span>
+      </div>
+      <div class="risk r2">
+        <div class="lvl">T2 · MID</div>
+        <h4>中风险标准动作</h4>
+        <p>标准 FAQ 回复、固定回访话术、客户建档、节点提醒、标签打标</p>
+        <span class="mode-tag">默认陪跑 · 围栏内可全自动</span>
+      </div>
+      <div class="risk r3">
+        <div class="lvl">T3 · LOW</div>
+        <h4>低风险内部</h4>
+        <p>知识检索、纪要整理、素材改写、待办草稿、周报汇总、文件归档</p>
+        <span class="mode-tag">默认全自动 · 事后知会</span>
+      </div>
+      <div class="risk r4">
+        <div class="lvl">T4 · SYS</div>
+        <h4>系统后台</h4>
+        <p>日志落盘、向量库更新、定时简报、围栏巡检、超时检测</p>
+        <span class="mode-tag">常驻全自动</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 04 Agent 协作全流程 ===== -->
+  <section class="sec">
+    <div class="sec-title">
+      <span class="sec-num">04</span>
+      <h2>一次任务的 Agent 全程协作 · 七步链路</h2>
+    </div>
+    <p class="sec-sub">以"主人接了一个客户咨询项目"为例：从一句自然语言指令，到 L2 任务树落地、产出物归档。</p>
+    <div class="flow">
+      <div class="flow-steps">
+        <div class="step">
+          <div class="num">STEP 01</div>
+          <span class="actor a-human">主人</span>
+          <h5>下达意图</h5>
+          <p>自然语言："帮我承接 XX 客户品牌咨询项目，交付诊断方案。"</p>
+        </div>
+        <div class="step">
+          <div class="num">STEP 02</div>
+          <span class="actor a-host">L0 管家</span>
+          <h5>识别与分级</h5>
+          <p>解析意图，判定 T1，路由给项目 Agent，读取围栏与当前模式。</p>
+        </div>
+        <div class="step">
+          <div class="num">STEP 03</div>
+          <span class="actor a-l1">L1 项目 Agent</span>
+          <h5>规划方案</h5>
+          <p>读事实库同类模板，拆出项目→里程碑→迭代→原子任务树，含产出物与验收标准。</p>
+        </div>
+        <div class="step">
+          <div class="num">STEP 04</div>
+          <span class="actor a-human">主人</span>
+          <h5>审核规划</h5>
+          <p>T1 强制陪跑。主人通过 / 修改 / 驳回；通过后才实例化 L2 任务树。</p>
+        </div>
+        <div class="step">
+          <div class="num">STEP 05</div>
+          <span class="actor a-l2">L2 任务树</span>
+          <h5>按模式执行</h5>
+          <p>T3 原子任务自动跑；T2 围栏内自动、出圈转审核；T1 节点到点告警主人。</p>
+        </div>
+        <div class="step">
+          <div class="num">STEP 06</div>
+          <span class="actor a-host">L0 管家</span>
+          <h5>围栏校验 & 触出</h5>
+          <p>所有对外动作二次校验围栏；不通过降级陪跑；通过后经外部触点发出。</p>
+        </div>
+        <div class="step">
+          <div class="num">STEP 07</div>
+          <span class="actor a-base">底座</span>
+          <h5>沉淀反馈</h5>
+          <p>产出物版本化入库；主人审核意见反哺事实库与围栏建议；里程碑验收聚合成果。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 05 L2 任务树 ===== -->
+  <section class="sec">
+    <div class="sec-title">
+      <span class="sec-num">05</span>
+      <h2>L2 任务树结构 · 模式继承规则</h2>
+    </div>
+    <p class="sec-sub">模式自顶向下继承：项目 → 里程碑 → 迭代 → 原子任务。单个原子任务可单独覆盖，例如"归档资料"独立开全自动。</p>
+    <div class="tree">
+      <div class="tree-node">
+        <div class="lvl-tag">PROJECT · L2.0</div>
+        <h4>项目</h4>
+        <p>承载客户交付或个人专项；总周期、SLA、总产出清单。</p>
+        <ul><li>终验 T1 强制陪跑</li><li>关联客户档案</li><li>整体模式默认陪跑</li></ul>
+      </div>
+      <div class="tree-node">
+        <div class="lvl-tag">MILESTONE · L2.1</div>
+        <h4>里程碑（关口）</h4>
+        <p>阶段成果交付点；验收不通过则阻塞后续迭代。</p>
+        <ul><li>需求确认 / 初稿 / 定稿 / 交付验收</li><li>到点自动触发验收</li><li>聚合本节点全部产出物</li></ul>
+      </div>
+      <div class="tree-node">
+        <div class="lvl-tag">ITERATION · L2.2</div>
+        <h4>迭代（时间盒）</h4>
+        <p>默认 1–3 天短周期，聚焦一组目标。</p>
+        <ul><li>启动简报</li><li>阻塞 / 延期实时告警</li><li>收尾小结，未完成项滚入下一轮</li></ul>
+      </div>
+      <div class="tree-node">
+        <div class="lvl-tag">TASK · L2.3</div>
+        <h4>原子任务</h4>
+        <p>最小执行单元；绑定责任人（Agent / 主人）、产出物、依赖。</p>
+        <ul><li>状态：待安排→进行中→待验收→完成</li><li>前置依赖阻塞时告警</li><li>可单独覆盖模式</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 06 产出物管理 ===== -->
+  <section class="sec">
+    <div class="sec-title">
+      <span class="sec-num">06</span>
+      <h2>产出物管理 · 所有 Agent 输出统一治理</h2>
+    </div>
+    <p class="sec-sub">产出物仓库独立于事实库：事实库是"可信知识"，产出物仓库是"Agent 草稿与历史"。每一条强制携带元数据。</p>
+    <div class="out-meta">
+      <div class="m"><b>关联 L2 节点</b>　产出物可挂在项目 / 里程碑 / 迭代 / 原子任务四级；里程碑验收页自动聚合并展示。</div>
+      <div class="m"><b>状态机</b>　草稿 → 已审核 → 已发送 / 驳回；每次修改自动升版本，支持回滚任意历史版本。</div>
+      <div class="m"><b>溯源字段</b>　Agent 来源 · T 等级 · 模式 · 引用知识片段 ID · 审核人 · 围栏触发记录。</div>
+    </div>
+  </section>
+
+  <footer>
+    <span>◈ SOLO AGENT OS · V1.0 BLUEPRINT</span>
+    <span>第一性原理 · 注意力即资产</span>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+/* 样式基线：Tailwind + Nuxt UI 默认主题，仅保留站点品牌色板 */
+@import 'tailwindcss';
+@import '@nuxt/ui';
+
+/* Nuxt UI 主色映射为站点品牌蓝（#0d44e8 落在 600 档） */
+@theme static {
+  --color-brand-50: #eef3ff;
+  --color-brand-100: #dfe8ff;
+  --color-brand-200: #c4d3ff;
+  --color-brand-300: #9db6ff;
+  --color-brand-400: #6f8dff;
+  --color-brand-500: #3f63fb;
+  --color-brand-600: #0d44e8;
+  --color-brand-700: #0b38c0;
+  --color-brand-800: #0d339b;
+  --color-brand-900: #102f7c;
+  --color-brand-950: #0a1d4d;
+}
+
+/* 输入类控件统一为单边框，去掉 Nuxt UI 默认用 ring 绘制的边框阴影 */
+input[data-slot='base'],
+textarea[data-slot='base'],
+button[data-slot='base'][role='combobox'] {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--ui-border);
+  box-shadow: none;
+}
+
+/* 聚焦时只保留主色边框：去掉 ring 阴影与 outline 光晕 */
+input[data-slot='base']:focus,
+textarea[data-slot='base']:focus,
+button[data-slot='base'][role='combobox']:focus {
+  border-color: var(--ui-primary);
+  box-shadow: none;
+  outline: none;
+}
+
+/* 补回 1px 边框占用的高度，输入类控件与按钮同为 32px；文本域同步内边距，文字起始位置与输入框一致 */
+input[data-slot='base']:not([type='file']),
+textarea[data-slot='base'],
+button[data-slot='base'][role='combobox'] {
+  padding-block: calc(0.375rem - 1px);
+}
+
+/* 可点击元素统一手型光标（Tailwind v4 默认按钮为箭头），禁用态显示禁止符号 */
+button:not(:disabled):not([aria-disabled='true']),
+[role='button']:not([aria-disabled='true']),
+[role='tab'],
+[role='menuitem']:not([aria-disabled='true']),
+[role='menuitemradio']:not([aria-disabled='true']),
+[role='option']:not([aria-disabled='true']),
+[role='switch']:not([aria-disabled='true']),
+[role='checkbox']:not([aria-disabled='true']),
+a[href],
+summary,
+label[for] {
+  cursor: pointer;
+}
+
+button:disabled,
+[aria-disabled='true'] {
+  cursor: not-allowed;
+}

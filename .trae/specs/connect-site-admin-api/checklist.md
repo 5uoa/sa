@@ -1,0 +1,21 @@
+# Checklist
+
+- [x] `site/admin/admin.sql` 可重复执行，9 张表与种子数据创建成功
+- [x] `/front/admin/members/list` 返回种子成员，字段与页面一致
+- [x] 成员邀请写入成功、邮箱重复返回 400、启停与删除生效
+- [x] `/front/admin/experts/list` 返回专家及其 `mcpIds`、`skillIds`
+- [x] 专家配置保存后重新读取一致（模型、温度、MCP、SKILL）
+- [x] 模型 / MCP / SKILL 的创建、编辑、删除均生效
+- [x] 删除被专家引用的注册项返回 400 且不删除
+- [x] 更新 / 删除不存在的 id 返回 404
+- [x] `/front/admin/quota/get-summary`、`get-project-quotas`、`get-model-quotas` 返回页面所需字段
+- [x] 模型额度保存后重新读取一致
+- [x] 告警设置保存后重新读取一致
+- [x] `/front/admin/logs/list` 返回操作记录，成员角色变更会新增日志
+- [x] `site/main.py` 已注册路由，`/docs` 可见全部后台管理接口
+- [x] `site/admin/admin_test.py` 全部通过
+- [x] `/admin` 页面成员、专家、模型、MCP、SKILL、额度总览、操作日志均来自接口
+- [x] `/quota` 页面额度与告警均来自接口，保存后刷新保持
+- [x] 页面无写死的成员/专家/额度/日志数组残留
+- [x] 页面加载失败时展示提示，无控制台报错
+- [x] prettier、eslint、`nuxt typecheck`、构建全部通过

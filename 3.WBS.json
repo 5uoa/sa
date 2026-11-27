@@ -1,0 +1,3028 @@
+{
+  "project_info": {
+    "total_tasks": 150,
+    "total_hours": 594
+  },
+  "tasks": [
+    {
+      "wbs_id": "WBS-DB-11-001",
+      "task_name": "知识片段与引用表结构设计",
+      "description": "设计 knowledge_fragment、fragment_citation 表，存储片段ID、标题、内容、来源、标签、版本、更新时间与引用位置、置信度",
+      "task_type": "数据库设计",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [],
+      "deliverables": [
+        "knowledge_fragment/fragment_citation 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "片段支持标签与版本检索",
+        "引用记录可回溯到具体片段与位置"
+      ],
+      "status": "已完成",
+      "prd_reference": "11. 事实库（唯一可信数据源）"
+    },
+    {
+      "wbs_id": "WBS-DB-11-002",
+      "task_name": "客户档案与项目资料表结构设计",
+      "description": "设计 fact_customer、project_material 表，存储客户联系人、分层标签、历史交互摘要与项目模板、历史方案、复盘记录",
+      "task_type": "数据库设计",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-11-001"
+      ],
+      "deliverables": [
+        "fact_customer/project_material 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "客户档案与项目资料可按名称与标签检索",
+        "字段覆盖 PRD 11.4.1"
+      ],
+      "status": "已完成",
+      "prd_reference": "11. 事实库（唯一可信数据源）"
+    },
+    {
+      "wbs_id": "WBS-DB-11-003",
+      "task_name": "偏好模板与审核反哺表结构设计",
+      "description": "设计 preference_template、fact_feedback 表，存储风格、格式、禁用表达与审核差异沉淀的事实条目及待确认状态",
+      "task_type": "数据库设计",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-11-001"
+      ],
+      "deliverables": [
+        "preference_template/fact_feedback 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "反哺条目支持待确认与已确认状态",
+        "同一偏见可追溯来源审核记录"
+      ],
+      "status": "已完成",
+      "prd_reference": "11. 事实库（唯一可信数据源）"
+    },
+    {
+      "wbs_id": "WBS-BA-11.1-001",
+      "task_name": "知识库检索接口",
+      "description": "实现按关键词、标签与场景检索知识片段接口，返回片段内容、引用ID与相关度，检索为空时返回无相关信息状态",
+      "task_type": "后台API开发",
+      "estimated_hours": 5,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-11-001"
+      ],
+      "deliverables": [
+        "知识库检索接口"
+      ],
+      "acceptance_criteria": [
+        "检索 P95 ≤800ms",
+        "检索为空时明确返回无相关信息而非空列表"
+      ],
+      "status": "未开始",
+      "prd_reference": "11. 事实库（唯一可信数据源）"
+    },
+    {
+      "wbs_id": "WBS-BA-11.2-001",
+      "task_name": "客户档案接口",
+      "description": "实现客户档案新增、查询、编辑接口，维护结构化客户事实与历史交互摘要，权限外访问拒绝并留痕",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-11-002"
+      ],
+      "deliverables": [
+        "客户档案 CRUD 接口"
+      ],
+      "acceptance_criteria": [
+        "档案写入与事实库保持一致",
+        "越权访问返回拒绝并写入留痕"
+      ],
+      "status": "未开始",
+      "prd_reference": "11. 事实库（唯一可信数据源）"
+    },
+    {
+      "wbs_id": "WBS-BA-11.3-001",
+      "task_name": "项目资料接口",
+      "description": "实现项目模板、历史方案与复盘记录的新增、查询、编辑接口，供 L1 项目 Agent 规划时检索",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-11-002"
+      ],
+      "deliverables": [
+        "项目资料 CRUD 接口"
+      ],
+      "acceptance_criteria": [
+        "按项目类型可检索到模板与历史方案",
+        "资料变更保留版本与更新时间"
+      ],
+      "status": "未开始",
+      "prd_reference": "11. 事实库（唯一可信数据源）"
+    },
+    {
+      "wbs_id": "WBS-BA-11.4-001",
+      "task_name": "偏好模板接口",
+      "description": "实现主人表达风格、格式与禁用表达模板的查询与维护接口，供内容 Agent 风格对齐调用",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-11-003"
+      ],
+      "deliverables": [
+        "偏好模板查询与维护接口"
+      ],
+      "acceptance_criteria": [
+        "模板可按场景返回风格与禁用表达",
+        "模板更新后新生成内容即时生效"
+      ],
+      "status": "未开始",
+      "prd_reference": "11. 事实库（唯一可信数据源）"
+    },
+    {
+      "wbs_id": "WBS-BA-11.5-001",
+      "task_name": "唯一锚点引用校验接口",
+      "description": "实现生成内容引用片段校验接口，无引用或引用失效时返回拦截结果，禁止无依据内容通过",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-11.1-001"
+      ],
+      "deliverables": [
+        "引用锚点校验接口"
+      ],
+      "acceptance_criteria": [
+        "无引用内容 100% 被拦截",
+        "引用失效片段被标记并触发重新检索"
+      ],
+      "status": "未开始",
+      "prd_reference": "11. 事实库（唯一可信数据源）"
+    },
+    {
+      "wbs_id": "WBS-BA-11.6-001",
+      "task_name": "审核反哺沉淀接口",
+      "description": "实现审核修改差异沉淀为新事实或偏好条目的接口，与既有事实冲突时进入待确认队列而不直接覆盖",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-11-003"
+      ],
+      "deliverables": [
+        "审核反哺沉淀接口"
+      ],
+      "acceptance_criteria": [
+        "审核修改 100% 生成反哺条目",
+        "反哺入库 ≤5s，冲突条目进入待确认队列"
+      ],
+      "status": "未开始",
+      "prd_reference": "11. 事实库（唯一可信数据源）"
+    },
+    {
+      "wbs_id": "WBS-BF-11.1-001",
+      "task_name": "知识检索与引用溯源页面",
+      "description": "实现知识检索框、片段卡片与引用溯源侧栏，内容中引用可点击查看原文",
+      "task_type": "后台前端开发",
+      "estimated_hours": 5,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-11.1-001",
+        "WBS-BA-11.5-001"
+      ],
+      "deliverables": [
+        "知识检索页与引用溯源组件"
+      ],
+      "acceptance_criteria": [
+        "引用 ≤1 次点击查看原文",
+        "无检索结果时展示明确提示文案"
+      ],
+      "status": "未开始",
+      "prd_reference": "11. 事实库（唯一可信数据源）"
+    },
+    {
+      "wbs_id": "WBS-BF-11.2-001",
+      "task_name": "客户档案与冲突裁决页面",
+      "description": "实现客户档案详情、引用列表与冲突对比视图，支持主人对冲突事实进行裁决并留痕",
+      "task_type": "后台前端开发",
+      "estimated_hours": 5,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-11.2-001",
+        "WBS-BA-11.6-001"
+      ],
+      "deliverables": [
+        "客户档案页与冲突裁决组件"
+      ],
+      "acceptance_criteria": [
+        "冲突双方内容并列展示且可一键裁决",
+        "裁决结果写入留痕并可查询"
+      ],
+      "status": "未开始",
+      "prd_reference": "11. 事实库（唯一可信数据源）"
+    },
+    {
+      "wbs_id": "WBS-JT-11-001",
+      "task_name": "事实库检索与反哺联调测试",
+      "description": "联调检索引用、唯一锚点校验、审核反哺沉淀与冲突裁决全流程",
+      "task_type": "联调测试",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BF-11.1-001",
+        "WBS-BF-11.2-001"
+      ],
+      "deliverables": [
+        "联调测试用例与测试记录"
+      ],
+      "acceptance_criteria": [
+        "引用率与无信息不编造两类场景测试通过",
+        "反哺内容与既有事实冲突时进入待确认队列"
+      ],
+      "status": "未开始",
+      "prd_reference": "11. 事实库（唯一可信数据源）"
+    },
+    {
+      "wbs_id": "WBS-DB-8-001",
+      "task_name": "分级规则表结构设计",
+      "description": "设计 t_level_rule 表，存储 T1-T4 场景清单、示例动作、规则条件、版本与启停状态",
+      "task_type": "数据库设计",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [],
+      "deliverables": [
+        "t_level_rule 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "规则表支持 T1-T4 四类等级与规则版本字段",
+        "同一规则多条版本可按时间排序查询"
+      ],
+      "status": "已完成",
+      "prd_reference": "8. 任务风险分级 T1–T4 与调度策略"
+    },
+    {
+      "wbs_id": "WBS-DB-8-002",
+      "task_name": "判定依据与人工覆盖表结构设计",
+      "description": "设计 t_level_judgement 表，记录任务ID、命中规则、规则版本、判定时间及人工覆盖人、覆盖时间、覆盖原因",
+      "task_type": "数据库设计",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-8-001"
+      ],
+      "deliverables": [
+        "t_level_judgement 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "每条任务判定记录可追溯命中规则与规则版本",
+        "覆盖信息字段完整且可查询"
+      ],
+      "status": "已完成",
+      "prd_reference": "8. 任务风险分级 T1–T4 与调度策略"
+    },
+    {
+      "wbs_id": "WBS-BA-8.1-001",
+      "task_name": "T 标签判定接口",
+      "description": "实现按任务场景与动作类型匹配分级规则并写入 T 等级与判定依据，未命中按 T2 兜底，多规则命中取最高风险",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-8-001"
+      ],
+      "deliverables": [
+        "T 标签判定服务接口"
+      ],
+      "acceptance_criteria": [
+        "单任务判定响应 ≤1s",
+        "多规则命中时返回最高风险等级并记录全部命中规则"
+      ],
+      "status": "未开始",
+      "prd_reference": "8. 任务风险分级 T1–T4 与调度策略"
+    },
+    {
+      "wbs_id": "WBS-BA-8.2-001",
+      "task_name": "分级规则配置接口",
+      "description": "实现 T1-T4 场景清单与示例动作的新增、编辑、查询、启停接口，规则变更仅对新任务生效",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-8-001"
+      ],
+      "deliverables": [
+        "分级规则 CRUD 接口"
+      ],
+      "acceptance_criteria": [
+        "规则启停后新任务判定结果随之变化",
+        "既有任务判定记录不被回溯改写"
+      ],
+      "status": "未开始",
+      "prd_reference": "8. 任务风险分级 T1–T4 与调度策略"
+    },
+    {
+      "wbs_id": "WBS-BA-8.3-001",
+      "task_name": "T 等级模式映射接口",
+      "description": "实现 T1 强制陪跑、T2 默认陪跑围栏内可全自动、T3 全自动事后知会、T4 常驻全自动的模式映射与校验",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-8.1-001"
+      ],
+      "deliverables": [
+        "模式映射与 T1 全自动拒绝接口"
+      ],
+      "acceptance_criteria": [
+        "T1 请求全自动 100% 被拒绝并返回原因",
+        "四类等级映射结果与 PRD 8.2 一致"
+      ],
+      "status": "未开始",
+      "prd_reference": "8. 任务风险分级 T1–T4 与调度策略"
+    },
+    {
+      "wbs_id": "WBS-BA-8.4-001",
+      "task_name": "判定留痕与人工覆盖接口",
+      "description": "实现判定记录查询与人工修改标签接口，覆盖时记录修改人、时间与原因，T1 不允许改为自动执行",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-8-002"
+      ],
+      "deliverables": [
+        "判定留痕查询与覆盖接口"
+      ],
+      "acceptance_criteria": [
+        "覆盖操作 100% 写入操作人与原因",
+        "T1 覆盖为自动执行的请求被拒绝"
+      ],
+      "status": "未开始",
+      "prd_reference": "8. 任务风险分级 T1–T4 与调度策略"
+    },
+    {
+      "wbs_id": "WBS-BF-8.1-001",
+      "task_name": "T 等级徽标与判定依据浮层组件",
+      "description": "实现任务卡片与列表中的 T 等级徽标（T1红/T2琥珀/T3绿/T4灰），悬停展示命中规则与规则版本",
+      "task_type": "后台前端开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-8.1-001",
+        "WBS-BA-8.4-001"
+      ],
+      "deliverables": [
+        "T 等级徽标与依据浮层组件"
+      ],
+      "acceptance_criteria": [
+        "四类等级颜色与 PRD 8.4.2 一致",
+        "悬停 1 次即展示判定依据，无需跳页"
+      ],
+      "status": "未开始",
+      "prd_reference": "8. 任务风险分级 T1–T4 与调度策略"
+    },
+    {
+      "wbs_id": "WBS-BF-8.2-001",
+      "task_name": "分级规则配置页面",
+      "description": "实现分级规则表格与编辑表单，支持新增、修改、启停，并在 T1 任务上置灰全自动入口",
+      "task_type": "后台前端开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-8.2-001"
+      ],
+      "deliverables": [
+        "分级规则配置页"
+      ],
+      "acceptance_criteria": [
+        "规则变更 ≤2 步完成",
+        "T1 任务全自动入口置灰并展示原因文案"
+      ],
+      "status": "未开始",
+      "prd_reference": "8. 任务风险分级 T1–T4 与调度策略"
+    },
+    {
+      "wbs_id": "WBS-JT-8-001",
+      "task_name": "分级判定与模式映射联调测试",
+      "description": "联调任务生成打标、规则配置生效、人工覆盖与 T1 全自动拒绝四类场景",
+      "task_type": "联调测试",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BF-8.1-001",
+        "WBS-BF-8.2-001"
+      ],
+      "deliverables": [
+        "联调测试用例与测试记录"
+      ],
+      "acceptance_criteria": [
+        "批量 100 条任务打标 ≤10s",
+        "T1 全自动路径与未命中兜底场景测试通过"
+      ],
+      "status": "未开始",
+      "prd_reference": "8. 任务风险分级 T1–T4 与调度策略"
+    },
+    {
+      "wbs_id": "WBS-DB-9-001",
+      "task_name": "围栏规则表结构设计",
+      "description": "设计 fence_rule 表，包含规则类型（范围/否决/时间/阈值）、适用场景、条件、阈值、生效时段、启停状态、版本与创建人",
+      "task_type": "数据库设计",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [],
+      "deliverables": [
+        "fence_rule 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "四类规则可独立存储并按场景分组查询",
+        "规则版本与启停状态字段齐全"
+      ],
+      "status": "已完成",
+      "prd_reference": "9. 围栏规则库与校验"
+    },
+    {
+      "wbs_id": "WBS-DB-9-002",
+      "task_name": "校验记录与动作快照表结构设计",
+      "description": "设计 fence_check_log、action_snapshot 表，记录命中规则、校验结果、降级原因、动作前后快照与回滚状态",
+      "task_type": "数据库设计",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-9-001"
+      ],
+      "deliverables": [
+        "fence_check_log/action_snapshot 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "校验记录可按任务与时间检索",
+        "快照包含动作前完整数据用于回滚"
+      ],
+      "status": "已完成",
+      "prd_reference": "9. 围栏规则库与校验"
+    },
+    {
+      "wbs_id": "WBS-BA-9.1-001",
+      "task_name": "范围规则配置接口",
+      "description": "实现限定允许对象、场景与数据范围的规则新增、编辑、查询、删除与启停接口",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-9-001"
+      ],
+      "deliverables": [
+        "范围规则 CRUD 接口"
+      ],
+      "acceptance_criteria": [
+        "规则保存后立即参与校验",
+        "超出范围的对象命中规则并返回原因"
+      ],
+      "status": "未开始",
+      "prd_reference": "9. 围栏规则库与校验"
+    },
+    {
+      "wbs_id": "WBS-BA-9.2-001",
+      "task_name": "否决规则配置接口",
+      "description": "实现禁止动作清单（报价、合同、承诺交付周期等）的新增、编辑、查询与删除接口",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-9-001"
+      ],
+      "deliverables": [
+        "否决规则 CRUD 接口"
+      ],
+      "acceptance_criteria": [
+        "命中否决规则的动作 100% 被拦截",
+        "否决优先于允许规则生效"
+      ],
+      "status": "未开始",
+      "prd_reference": "9. 围栏规则库与校验"
+    },
+    {
+      "wbs_id": "WBS-BA-9.3-001",
+      "task_name": "时间规则配置接口",
+      "description": "实现允许执行时段、频率与间隔规则的新增、编辑、查询与启停接口",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-9-001"
+      ],
+      "deliverables": [
+        "时间规则 CRUD 接口"
+      ],
+      "acceptance_criteria": [
+        "时段外请求被拒绝并返回允许时段",
+        "频率超限请求被拦截"
+      ],
+      "status": "未开始",
+      "prd_reference": "9. 围栏规则库与校验"
+    },
+    {
+      "wbs_id": "WBS-BA-9.4-001",
+      "task_name": "阈值规则配置接口",
+      "description": "实现数量、金额、条数等上限规则的新增、编辑、查询与删除接口",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-9-001"
+      ],
+      "deliverables": [
+        "阈值规则 CRUD 接口"
+      ],
+      "acceptance_criteria": [
+        "超阈值请求 100% 被拦截并返回阈值明细",
+        "阈值支持按场景差异化配置"
+      ],
+      "status": "未开始",
+      "prd_reference": "9. 围栏规则库与校验"
+    },
+    {
+      "wbs_id": "WBS-BA-9.5-001",
+      "task_name": "围栏校验服务接口",
+      "description": "实现自动执行前与对外发送前的双重校验，四类规则全部通过才放行，不通过返回命中规则与降级原因",
+      "task_type": "后台API开发",
+      "estimated_hours": 5,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-9.1-001",
+        "WBS-BA-9.2-001",
+        "WBS-BA-9.3-001",
+        "WBS-BA-9.4-001"
+      ],
+      "deliverables": [
+        "围栏校验服务接口"
+      ],
+      "acceptance_criteria": [
+        "单次校验 P95 ≤300ms",
+        "校验不通过时返回降级结论与命中规则ID"
+      ],
+      "status": "未开始",
+      "prd_reference": "9. 围栏规则库与校验"
+    },
+    {
+      "wbs_id": "WBS-BA-9.6-001",
+      "task_name": "无围栏禁止全自动接口",
+      "description": "实现场景无有效围栏规则时拒绝开启全自动的校验接口，并返回配置入口提示",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-9.5-001"
+      ],
+      "deliverables": [
+        "无围栏校验接口"
+      ],
+      "acceptance_criteria": [
+        "无有效规则场景开启全自动 100% 被拒绝",
+        "返回明确原因文案与规则配置指引"
+      ],
+      "status": "未开始",
+      "prd_reference": "9. 围栏规则库与校验"
+    },
+    {
+      "wbs_id": "WBS-BA-9.7-001",
+      "task_name": "动作快照与一键回滚接口",
+      "description": "实现动作执行前快照保存与一键回滚接口，回滚恢复动作前状态并记录回滚人、时间与结果",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-9-002"
+      ],
+      "deliverables": [
+        "快照保存与回滚接口"
+      ],
+      "acceptance_criteria": [
+        "回滚后目标数据与动作前一致",
+        "回滚失败时保留现场并返回人工处理提示"
+      ],
+      "status": "未开始",
+      "prd_reference": "9. 围栏规则库与校验"
+    },
+    {
+      "wbs_id": "WBS-BF-9.1-001",
+      "task_name": "围栏规则列表与编辑器页面",
+      "description": "实现按类型分组的规则列表与规则编辑器，支持四类规则配置、启停与版本查看",
+      "task_type": "后台前端开发",
+      "estimated_hours": 5,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-9.1-001",
+        "WBS-BA-9.2-001",
+        "WBS-BA-9.3-001",
+        "WBS-BA-9.4-001"
+      ],
+      "deliverables": [
+        "围栏规则配置页与编辑器组件"
+      ],
+      "acceptance_criteria": [
+        "规则配置 ≤3 步完成",
+        "四类规则分组展示且启停状态即时生效"
+      ],
+      "status": "未开始",
+      "prd_reference": "9. 围栏规则库与校验"
+    },
+    {
+      "wbs_id": "WBS-BF-9.2-001",
+      "task_name": "校验记录与回滚确认页面",
+      "description": "实现校验记录列表、命中规则详情、围栏告警条与回滚二次确认弹窗，展示降级结果与影响范围",
+      "task_type": "后台前端开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-9.5-001",
+        "WBS-BA-9.7-001"
+      ],
+      "deliverables": [
+        "校验记录页与回滚确认组件"
+      ],
+      "acceptance_criteria": [
+        "告警可一键跳转命中规则详情",
+        "回滚前展示影响范围并要求二次确认"
+      ],
+      "status": "未开始",
+      "prd_reference": "9. 围栏规则库与校验"
+    },
+    {
+      "wbs_id": "WBS-JT-9-001",
+      "task_name": "围栏校验与回滚联调测试",
+      "description": "联调四类规则配置、执行前校验、出圈降级、告警与一键回滚全流程",
+      "task_type": "联调测试",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BF-9.1-001",
+        "WBS-BF-9.2-001"
+      ],
+      "deliverables": [
+        "联调测试用例与测试记录"
+      ],
+      "acceptance_criteria": [
+        "无围栏开全自动、否决优先、出圈降级三类场景全部通过",
+        "回滚后数据一致性校验通过"
+      ],
+      "status": "未开始",
+      "prd_reference": "9. 围栏规则库与校验"
+    },
+    {
+      "wbs_id": "WBS-DB-7-001",
+      "task_name": "全局模式配置表结构设计",
+      "description": "设计 runtime_mode_config 表，存储默认模式、全局开关状态、熔断状态、熔断时间与操作人",
+      "task_type": "数据库设计",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [],
+      "deliverables": [
+        "runtime_mode_config 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "全局唯一配置记录可读写，默认模式为陪跑",
+        "熔断状态与熔断时间字段完整"
+      ],
+      "status": "已完成",
+      "prd_reference": "7. 双运行模式与三级控制"
+    },
+    {
+      "wbs_id": "WBS-DB-7-002",
+      "task_name": "场景授权与任务覆盖表结构设计",
+      "description": "设计 scene_authorization、task_mode_override 表，存储场景、绑定围栏规则集、授权人与有效期，以及任务级覆盖模式与原因",
+      "task_type": "数据库设计",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-7-001"
+      ],
+      "deliverables": [
+        "scene_authorization/task_mode_override 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "授权记录支持有效期判定",
+        "任务覆盖记录可按任务ID查询"
+      ],
+      "status": "已完成",
+      "prd_reference": "7. 双运行模式与三级控制"
+    },
+    {
+      "wbs_id": "WBS-BA-7.1-001",
+      "task_name": "陪跑模式规则接口",
+      "description": "实现陪跑模式下的审核队列投递、禁止主动外发与禁止修改核心业务数据约束的校验接口",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-7-001"
+      ],
+      "deliverables": [
+        "陪跑模式约束校验接口"
+      ],
+      "acceptance_criteria": [
+        "陪跑模式下对外输出 100% 进入审核队列",
+        "陪跑模式下直接外发请求被拒绝"
+      ],
+      "status": "未开始",
+      "prd_reference": "7. 双运行模式与三级控制"
+    },
+    {
+      "wbs_id": "WBS-BA-7.2-001",
+      "task_name": "全自动执行与出圈降级接口",
+      "description": "实现围栏内自主执行、事后知会与出圈降级陪跑的判定接口，并联动围栏规则集校验",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-7.1-001"
+      ],
+      "deliverables": [
+        "全自动执行与降级接口"
+      ],
+      "acceptance_criteria": [
+        "出圈动作 100% 降级陪跑并生成告警",
+        "全自动执行动作写入事后知会记录"
+      ],
+      "status": "未开始",
+      "prd_reference": "7. 双运行模式与三级控制"
+    },
+    {
+      "wbs_id": "WBS-BA-7.3-001",
+      "task_name": "全局全自动开关接口",
+      "description": "实现全局全自动模式的一键启用与停用接口，写入操作人与变更时间并留痕",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-7-001"
+      ],
+      "deliverables": [
+        "全局开关接口"
+      ],
+      "acceptance_criteria": [
+        "开关切换 ≤3s 生效",
+        "每次切换写入操作人与时间"
+      ],
+      "status": "未开始",
+      "prd_reference": "7. 双运行模式与三级控制"
+    },
+    {
+      "wbs_id": "WBS-BA-7.4-001",
+      "task_name": "单场景全自动授权接口",
+      "description": "实现按场景授权全自动接口，授权前校验围栏规则集有效性，写入有效期并在规则停用时自动回落陪跑",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-7.2-001",
+        "WBS-DB-7-002"
+      ],
+      "deliverables": [
+        "场景授权接口与规则集绑定校验"
+      ],
+      "acceptance_criteria": [
+        "无有效围栏规则集时授权被拒绝",
+        "授权到期或规则停用后场景自动回落陪跑并告警"
+      ],
+      "status": "未开始",
+      "prd_reference": "7. 双运行模式与三级控制"
+    },
+    {
+      "wbs_id": "WBS-BA-7.5-001",
+      "task_name": "紧急熔断接口",
+      "description": "实现全局熔断接口，熔断后所有自动场景立即转陪跑，执行中动作可中断的立即中断、不可中断的标记并事后知会",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-7.3-001"
+      ],
+      "deliverables": [
+        "紧急熔断接口"
+      ],
+      "acceptance_criteria": [
+        "熔断生效 ≤10s 且全局状态可查询",
+        "熔断期间新任务全部按陪跑处理"
+      ],
+      "status": "未开始",
+      "prd_reference": "7. 双运行模式与三级控制"
+    },
+    {
+      "wbs_id": "WBS-BF-7.1-001",
+      "task_name": "模式总览与熔断操作页面",
+      "description": "实现模式总览卡片（全局开关、熔断状态、授权场景数量）与熔断二次确认弹窗，熔断后展示全局状态横幅",
+      "task_type": "后台前端开发",
+      "estimated_hours": 5,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-7.3-001",
+        "WBS-BA-7.5-001"
+      ],
+      "deliverables": [
+        "模式总览页与熔断组件"
+      ],
+      "acceptance_criteria": [
+        "熔断操作 ≤2 步完成",
+        "全局模式与熔断状态全程可见"
+      ],
+      "status": "未开始",
+      "prd_reference": "7. 双运行模式与三级控制"
+    },
+    {
+      "wbs_id": "WBS-BF-7.2-001",
+      "task_name": "场景授权列表与表单页面",
+      "description": "实现场景授权列表与授权表单，展示绑定围栏规则集与有效期，无围栏时不提供可绕过入口",
+      "task_type": "后台前端开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-7.4-001"
+      ],
+      "deliverables": [
+        "场景授权页与授权表单"
+      ],
+      "acceptance_criteria": [
+        "授权成功后即时显示生效围栏规则集",
+        "无围栏场景提交按钮禁用并展示原因"
+      ],
+      "status": "未开始",
+      "prd_reference": "7. 双运行模式与三级控制"
+    },
+    {
+      "wbs_id": "WBS-JT-7-001",
+      "task_name": "模式切换与熔断联调测试",
+      "description": "联调默认陪跑、场景授权、全局开关、出圈降级与紧急熔断三级控制组合场景",
+      "task_type": "联调测试",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BF-7.1-001",
+        "WBS-BF-7.2-001"
+      ],
+      "deliverables": [
+        "联调测试用例与测试记录"
+      ],
+      "acceptance_criteria": [
+        "三级控制可独立生效且互不覆盖",
+        "熔断后 ≤10s 全部转陪跑，T1 任务无法进入全自动"
+      ],
+      "status": "未开始",
+      "prd_reference": "7. 双运行模式与三级控制"
+    },
+    {
+      "wbs_id": "WBS-DB-1-001",
+      "task_name": "意图与上下文快照表结构设计",
+      "description": "设计 intent_record、context_snapshot 表，存储原始文本、解析结果、置信度、澄清记录、上下文内容与权限约束",
+      "task_type": "数据库设计",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [],
+      "deliverables": [
+        "intent_record/context_snapshot 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "意图解析结果与澄清记录可追溯",
+        "快照含权限约束与有效期字段"
+      ],
+      "status": "已完成",
+      "prd_reference": "1. L0 管家 Agent（全局唯一主控）"
+    },
+    {
+      "wbs_id": "WBS-DB-1-002",
+      "task_name": "任务路由表结构设计",
+      "description": "设计 agent_task 表，存储任务ID、T等级、执行模式、路由对象、当前状态与上下文快照引用",
+      "task_type": "数据库设计",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-1-001"
+      ],
+      "deliverables": [
+        "agent_task 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "任务可关联意图与快照记录",
+        "路由对象与状态字段支持按状态检索"
+      ],
+      "status": "已完成",
+      "prd_reference": "1. L0 管家 Agent（全局唯一主控）"
+    },
+    {
+      "wbs_id": "WBS-DB-1-003",
+      "task_name": "审核项与简报表结构设计",
+      "description": "设计 review_item、briefing 表，存储来源 Agent、提交时间、处理结果、审核意见与简报周期指标",
+      "task_type": "数据库设计",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-1-002"
+      ],
+      "deliverables": [
+        "review_item/briefing 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "审核项支持通过/修改/驳回三态与意见字段",
+        "简报可按周期查询待办、风险、待验收数量"
+      ],
+      "status": "已完成",
+      "prd_reference": "1. L0 管家 Agent（全局唯一主控）"
+    },
+    {
+      "wbs_id": "WBS-BA-1.1-001",
+      "task_name": "意图识别与澄清接口",
+      "description": "实现自然语言转结构化意图接口，输出解析结果与置信度，低置信时生成澄清问题而不臆测执行",
+      "task_type": "后台API开发",
+      "estimated_hours": 5,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-1-001"
+      ],
+      "deliverables": [
+        "意图识别与澄清接口"
+      ],
+      "acceptance_criteria": [
+        "意图解析响应 ≤3s",
+        "意图不明确时返回澄清问题且不创建任务"
+      ],
+      "status": "未开始",
+      "prd_reference": "1. L0 管家 Agent（全局唯一主控）"
+    },
+    {
+      "wbs_id": "WBS-BA-1.2-001",
+      "task_name": "风险分级调用接口",
+      "description": "实现调用 T 标签判定服务并将等级写入任务的接口，判定失败时按 T2 兜底并告警",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-1.1-001"
+      ],
+      "deliverables": [
+        "风险分级调用与兜底接口"
+      ],
+      "acceptance_criteria": [
+        "100% 新建任务写入 T 等级",
+        "分级服务异常时按 T2+陪跑兜底并留痕"
+      ],
+      "status": "未开始",
+      "prd_reference": "1. L0 管家 Agent（全局唯一主控）"
+    },
+    {
+      "wbs_id": "WBS-BA-1.3-001",
+      "task_name": "围栏校验调用接口",
+      "description": "实现调度前与外发前两次围栏校验调用，校验不可用时降级陪跑并记录原因",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-1.1-001"
+      ],
+      "deliverables": [
+        "调度前/外发前围栏校验接口"
+      ],
+      "acceptance_criteria": [
+        "对外动作 100% 经二次校验",
+        "校验服务不可用时返回降级陪跑结论"
+      ],
+      "status": "未开始",
+      "prd_reference": "1. L0 管家 Agent（全局唯一主控）"
+    },
+    {
+      "wbs_id": "WBS-BA-1.4-001",
+      "task_name": "模式调度接口",
+      "description": "实现按 T 等级、场景授权与围栏校验结果确定执行模式的调度接口，冲突时取更严格模式",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-1.2-001",
+        "WBS-BA-1.3-001"
+      ],
+      "deliverables": [
+        "执行模式调度接口"
+      ],
+      "acceptance_criteria": [
+        "T1 任务调度结果恒为陪跑",
+        "任务级覆盖与场景授权冲突时返回更严格模式"
+      ],
+      "status": "未开始",
+      "prd_reference": "1. L0 管家 Agent（全局唯一主控）"
+    },
+    {
+      "wbs_id": "WBS-BA-1.5-001",
+      "task_name": "任务路由与上下文下发接口",
+      "description": "实现按场景分发至 L1 规划或 L2 执行的路由接口，下发上下文快照与权限约束，并处理超时与有限重试",
+      "task_type": "后台API开发",
+      "estimated_hours": 5,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-1-002",
+        "WBS-BA-1.4-001"
+      ],
+      "deliverables": [
+        "任务路由与上下文下发接口"
+      ],
+      "acceptance_criteria": [
+        "路由响应 ≤1s 且无绕过通道",
+        "L1 超时后有限重试并转人工告警"
+      ],
+      "status": "未开始",
+      "prd_reference": "1. L0 管家 Agent（全局唯一主控）"
+    },
+    {
+      "wbs_id": "WBS-BA-1.6-001",
+      "task_name": "审核队列接口",
+      "description": "实现待审项汇总、详情、通过与驳回接口，支持修改意见回写，T1 审核项要求逐条确认",
+      "task_type": "后台API开发",
+      "estimated_hours": 5,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-1-003"
+      ],
+      "deliverables": [
+        "审核队列查询与处理接口"
+      ],
+      "acceptance_criteria": [
+        "审核结果实时回写且可追溯",
+        "驳回必须携带审核意见"
+      ],
+      "status": "未开始",
+      "prd_reference": "1. L0 管家 Agent（全局唯一主控）"
+    },
+    {
+      "wbs_id": "WBS-BA-1.7-001",
+      "task_name": "全局熔断接口",
+      "description": "实现 L0 全局熔断接口，将全部自动行为退回陪跑并广播熔断状态",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-1.4-001"
+      ],
+      "deliverables": [
+        "L0 全局熔断接口"
+      ],
+      "acceptance_criteria": [
+        "熔断 ≤10s 生效并可查询状态",
+        "熔断期间新任务全部按陪跑处理"
+      ],
+      "status": "未开始",
+      "prd_reference": "1. L0 管家 Agent（全局唯一主控）"
+    },
+    {
+      "wbs_id": "WBS-BA-1.8-001",
+      "task_name": "日志聚合与简报生成接口",
+      "description": "实现各层动作日志聚合与按周期合成简报接口，输出待办、风险、待验收、熔断与降级次数",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-1-003"
+      ],
+      "deliverables": [
+        "日志聚合与简报生成接口"
+      ],
+      "acceptance_criteria": [
+        "简报生成 ≤60s 且包含四类指标",
+        "审核积压超阈值时简报置顶提醒"
+      ],
+      "status": "未开始",
+      "prd_reference": "1. L0 管家 Agent（全局唯一主控）"
+    },
+    {
+      "wbs_id": "WBS-BF-1.1-001",
+      "task_name": "意图输入与路由状态页面",
+      "description": "实现意图输入区、解析结果展示与任务路由状态列表，支持澄清交互与状态标签",
+      "task_type": "后台前端开发",
+      "estimated_hours": 5,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-1.1-001",
+        "WBS-BA-1.5-001"
+      ],
+      "deliverables": [
+        "意图输入页与路由状态组件"
+      ],
+      "acceptance_criteria": [
+        "意图提交后展示解析结果与路由对象",
+        "澄清场景给出可选项且不自动执行"
+      ],
+      "status": "未开始",
+      "prd_reference": "1. L0 管家 Agent（全局唯一主控）"
+    },
+    {
+      "wbs_id": "WBS-BF-1.2-001",
+      "task_name": "审核队列处理页面",
+      "description": "实现审核卡片列表与详情，提供通过、修改、驳回操作与审核意见输入，T1 项逐条确认",
+      "task_type": "后台前端开发",
+      "estimated_hours": 5,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-1.6-001"
+      ],
+      "deliverables": [
+        "审核队列页与审核卡片组件"
+      ],
+      "acceptance_criteria": [
+        "单条审核 ≤3 次点击完成",
+        "驳回时未填写意见不可提交"
+      ],
+      "status": "未开始",
+      "prd_reference": "1. L0 管家 Agent（全局唯一主控）"
+    },
+    {
+      "wbs_id": "WBS-BF-1.3-001",
+      "task_name": "熔断开关与简报页面",
+      "description": "实现熔断按钮与确认弹窗、全局状态横幅与简报摘要卡，简报关键项可跳转详情",
+      "task_type": "后台前端开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-1.7-001",
+        "WBS-BA-1.8-001"
+      ],
+      "deliverables": [
+        "熔断操作组件与简报页"
+      ],
+      "acceptance_criteria": [
+        "熔断状态全局可见并提示影响范围",
+        "简报 1 页可读且关键项可跳转"
+      ],
+      "status": "未开始",
+      "prd_reference": "1. L0 管家 Agent（全局唯一主控）"
+    },
+    {
+      "wbs_id": "WBS-JT-1-001",
+      "task_name": "管家主链路联调测试",
+      "description": "联调意图识别、分级、围栏、模式调度、路由、审核、熔断与简报全链路，覆盖异常分支",
+      "task_type": "联调测试",
+      "estimated_hours": 5,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BF-1.1-001",
+        "WBS-BF-1.2-001",
+        "WBS-BF-1.3-001"
+      ],
+      "deliverables": [
+        "联调测试用例与测试记录"
+      ],
+      "acceptance_criteria": [
+        "任务 100% 经 L0 路由且无绕过通道",
+        "意图不明、分级失败、L1 超时、熔断四类异常按 PRD 处理"
+      ],
+      "status": "未开始",
+      "prd_reference": "1. L0 管家 Agent（全局唯一主控）"
+    },
+    {
+      "wbs_id": "WBS-DB-6-001",
+      "task_name": "项目与里程碑表结构设计",
+      "description": "设计 project、milestone 表，包含客户档案关联、总周期、SLA、总产出清单、默认模式、终验T等级、验收标准、验收状态与驳回意见字段",
+      "task_type": "数据库设计",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [],
+      "deliverables": [
+        "project/milestone 建表 DDL 与迁移脚本"
+      ],
+      "acceptance_criteria": [
+        "表字段覆盖 PRD 6.4.1 全部项目与里程碑字段",
+        "迁移脚本在 sa 库执行成功且索引、外键完整"
+      ],
+      "status": "已完成",
+      "prd_reference": "6. L2 任务树与执行"
+    },
+    {
+      "wbs_id": "WBS-DB-6-002",
+      "task_name": "迭代与原子任务表结构设计",
+      "description": "设计 iteration、atomic_task 表，包含起止时间、迭代目标、启动简报、收尾小结、滚动来源、责任人、T等级、执行模式、前置依赖、阻塞原因字段",
+      "task_type": "数据库设计",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-6-001"
+      ],
+      "deliverables": [
+        "iteration/atomic_task 建表 DDL 与迁移脚本"
+      ],
+      "acceptance_criteria": [
+        "层级外键指向里程碑与迭代，字段覆盖 PRD 6.4.1",
+        "单项目 500 节点查询走索引，执行计划无全表扫描"
+      ],
+      "status": "已完成",
+      "prd_reference": "6. L2 任务树与执行"
+    },
+    {
+      "wbs_id": "WBS-DB-6-003",
+      "task_name": "任务状态变更留痕表结构设计",
+      "description": "设计 task_status_history 表，记录前后状态、操作者、时间与操作来源，支撑状态可追溯与并发事务校验",
+      "task_type": "数据库设计",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-6-002"
+      ],
+      "deliverables": [
+        "task_status_history 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "每次状态变更可写入前后状态、操作者与时间",
+        "按任务ID+时间可查询完整流转历史"
+      ],
+      "status": "已完成",
+      "prd_reference": "6. L2 任务树与执行"
+    },
+    {
+      "wbs_id": "WBS-BA-6.1-001",
+      "task_name": "项目创建查询编辑归档接口",
+      "description": "实现项目新增、列表查询、详情、编辑与归档接口，创建时写入客户档案关联、总周期、SLA、总产出清单与默认模式",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-6-001"
+      ],
+      "deliverables": [
+        "项目 CRUD 接口与参数校验"
+      ],
+      "acceptance_criteria": [
+        "创建/编辑/归档接口返回统一响应结构",
+        "归档后项目不可再新增下级节点"
+      ],
+      "status": "未开始",
+      "prd_reference": "6. L2 任务树与执行"
+    },
+    {
+      "wbs_id": "WBS-BA-6.2-001",
+      "task_name": "里程碑与验收标准接口",
+      "description": "实现里程碑新增、编辑、删除、查询接口，维护验收标准、计划验收时间、验收状态与驳回意见",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-6-001"
+      ],
+      "deliverables": [
+        "里程碑 CRUD 接口"
+      ],
+      "acceptance_criteria": [
+        "验收状态仅允许待验收/通过/驳回三值",
+        "驳回时必须写入驳回意见"
+      ],
+      "status": "未开始",
+      "prd_reference": "6. L2 任务树与执行"
+    },
+    {
+      "wbs_id": "WBS-BA-6.3-001",
+      "task_name": "迭代时间盒与收尾结算接口",
+      "description": "实现迭代创建、编辑、查询与到期收尾接口，校验 1-3 天时间盒，生成启动简报与收尾小结，未完成项滚入下一轮并保留来源",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-6-002"
+      ],
+      "deliverables": [
+        "迭代 CRUD 与收尾结算接口"
+      ],
+      "acceptance_criteria": [
+        "时间盒超出 1-3 天被拒绝并返回原因",
+        "收尾后未完成项自动生成下一轮任务且带原迭代来源标记"
+      ],
+      "status": "未开始",
+      "prd_reference": "6. L2 任务树与执行"
+    },
+    {
+      "wbs_id": "WBS-BA-6.4-001",
+      "task_name": "原子任务与前置依赖接口",
+      "description": "实现原子任务新增、编辑、查询、删除接口，绑定责任人、产出物、T等级、执行模式与前置依赖，缺失上级节点时拒绝创建",
+      "task_type": "后台API开发",
+      "estimated_hours": 5,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-6-002"
+      ],
+      "deliverables": [
+        "原子任务 CRUD 接口与依赖关系写入"
+      ],
+      "acceptance_criteria": [
+        "无迭代直接创建任务被拒绝并提示补齐上级",
+        "依赖关系支持多条并以任务ID准确关联"
+      ],
+      "status": "未开始",
+      "prd_reference": "6. L2 任务树与执行"
+    },
+    {
+      "wbs_id": "WBS-BA-6.5-001",
+      "task_name": "模式继承与任务级覆盖接口",
+      "description": "实现项目→里程碑→迭代→原子任务的执行模式继承计算，支持单个原子任务覆盖并记录覆盖原因",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-6.4-001"
+      ],
+      "deliverables": [
+        "模式继承计算与覆盖接口"
+      ],
+      "acceptance_criteria": [
+        "修改项目模式后未覆盖节点同步变更，已覆盖任务保持不变",
+        "覆盖操作写入操作人与原因"
+      ],
+      "status": "未开始",
+      "prd_reference": "6. L2 任务树与执行"
+    },
+    {
+      "wbs_id": "WBS-BA-6.6-001",
+      "task_name": "状态机流转校验接口",
+      "description": "实现任务状态流转接口，仅允许待安排→进行中→待验收→完成及规则内回退，非法流转返回当前状态可执行动作",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-6-003"
+      ],
+      "deliverables": [
+        "状态流转接口与流转规则配置"
+      ],
+      "acceptance_criteria": [
+        "非法流转 100% 被拒绝并返回允许动作列表",
+        "每次流转写入状态变更留痕"
+      ],
+      "status": "未开始",
+      "prd_reference": "6. L2 任务树与执行"
+    },
+    {
+      "wbs_id": "WBS-BA-6.7-001",
+      "task_name": "依赖阻塞与到点告警接口",
+      "description": "实现前置依赖校验、阻塞标记与里程碑到点提醒，依赖未完成时禁止进入进行中并告警责任人",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-6.6-001"
+      ],
+      "deliverables": [
+        "依赖校验与告警接口"
+      ],
+      "acceptance_criteria": [
+        "依赖未完成任务不可进入进行中，返回阻塞原因",
+        "状态变化后 1 分钟内可查询到告警记录"
+      ],
+      "status": "未开始",
+      "prd_reference": "6. L2 任务树与执行"
+    },
+    {
+      "wbs_id": "WBS-BF-6.1-001",
+      "task_name": "项目列表与四级任务树页面",
+      "description": "实现左侧项目列表与右侧四级任务树，支持展开折叠、节点详情抽屉编辑、状态标签与阻塞告警提示条",
+      "task_type": "后台前端开发",
+      "estimated_hours": 6,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-6.4-001",
+        "WBS-BA-6.5-001"
+      ],
+      "deliverables": [
+        "项目列表页与任务树组件"
+      ],
+      "acceptance_criteria": [
+        "100 节点内展开折叠无卡顿",
+        "点击任一节点可在抽屉查看并保存详情"
+      ],
+      "status": "未开始",
+      "prd_reference": "6. L2 任务树与执行"
+    },
+    {
+      "wbs_id": "WBS-BF-6.2-001",
+      "task_name": "里程碑验收与迭代时间盒页面",
+      "description": "实现里程碑验收页与迭代时间盒视图，聚合本节点产出物列表，提供通过/驳回操作并展示对后续迭代的放行或阻塞影响",
+      "task_type": "后台前端开发",
+      "estimated_hours": 5,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-6.2-001",
+        "WBS-BA-6.3-001"
+      ],
+      "deliverables": [
+        "里程碑验收页与迭代时间盒组件"
+      ],
+      "acceptance_criteria": [
+        "验收页展示该里程碑全部产出物且无遗漏",
+        "驳回必须填写意见后才能提交"
+      ],
+      "status": "未开始",
+      "prd_reference": "6. L2 任务树与执行"
+    },
+    {
+      "wbs_id": "WBS-JT-6-001",
+      "task_name": "任务树四级结构与状态流转联调测试",
+      "description": "联调项目→里程碑→迭代→原子任务创建、模式继承、状态流转与验收阻塞全流程，覆盖异常分支",
+      "task_type": "联调测试",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BF-6.1-001",
+        "WBS-BF-6.2-001"
+      ],
+      "deliverables": [
+        "联调测试用例与测试记录"
+      ],
+      "acceptance_criteria": [
+        "四级结构创建与归属校验全部通过",
+        "非法流转、依赖未完成、验收驳回三类异常均按 PRD 提示"
+      ],
+      "status": "未开始",
+      "prd_reference": "6. L2 任务树与执行"
+    },
+    {
+      "wbs_id": "WBS-DB-10-001",
+      "task_name": "产出物与版本表结构设计",
+      "description": "设计 deliverable、deliverable_version 表，存储标题、类型、所属节点、状态、版本与当前内容",
+      "task_type": "数据库设计",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [],
+      "deliverables": [
+        "deliverable/deliverable_version 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "产出物可挂载四级节点并支持软删除",
+        "每次修改生成新版本记录"
+      ],
+      "status": "已完成",
+      "prd_reference": "10. 产出物管理"
+    },
+    {
+      "wbs_id": "WBS-DB-10-002",
+      "task_name": "溯源与审核记录表结构设计",
+      "description": "设计 deliverable_trace、deliverable_review 表，存储 Agent 来源、T等级、执行模式、引用片段、审核人与围栏触发记录",
+      "task_type": "数据库设计",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-10-001"
+      ],
+      "deliverables": [
+        "deliverable_trace/deliverable_review 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "溯源六项字段齐全",
+        "审核意见与驳回原因可按产出物查询"
+      ],
+      "status": "已完成",
+      "prd_reference": "10. 产出物管理"
+    },
+    {
+      "wbs_id": "WBS-BA-10.1-001",
+      "task_name": "产出物四级挂载接口",
+      "description": "实现产出物挂载项目/里程碑/迭代/原子任务的入库接口，未挂载节点时拒绝入库并提示补齐",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-10-001"
+      ],
+      "deliverables": [
+        "产出物挂载接口"
+      ],
+      "acceptance_criteria": [
+        "产出物 100% 挂载到有效 L2 节点",
+        "未挂载节点入库被拒绝"
+      ],
+      "status": "未开始",
+      "prd_reference": "10. 产出物管理"
+    },
+    {
+      "wbs_id": "WBS-BA-10.2-001",
+      "task_name": "产出物状态机接口",
+      "description": "实现草稿→已审核→已发送/驳回状态流转接口，非规定流转拒绝，驳回回草稿并记录意见",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-10-001"
+      ],
+      "deliverables": [
+        "产出物状态流转接口"
+      ],
+      "acceptance_criteria": [
+        "非法流转 0 例通过",
+        "驳回后状态回草稿且意见可查"
+      ],
+      "status": "未开始",
+      "prd_reference": "10. 产出物管理"
+    },
+    {
+      "wbs_id": "WBS-BA-10.3-001",
+      "task_name": "版本管理与回滚接口",
+      "description": "实现每次修改自动升版、历史版本查询与任意版本回滚接口，并发修改返回版本冲突提示",
+      "task_type": "后台API开发",
+      "estimated_hours": 5,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-10-001"
+      ],
+      "deliverables": [
+        "版本管理与回滚接口"
+      ],
+      "acceptance_criteria": [
+        "回滚 ≤3s 且内容与目标版本一致",
+        "并发修改返回版本冲突并提示合并"
+      ],
+      "status": "未开始",
+      "prd_reference": "10. 产出物管理"
+    },
+    {
+      "wbs_id": "WBS-BA-10.4-001",
+      "task_name": "溯源字段校验接口",
+      "description": "实现产出物进入已审核状态前的溯源六项字段校验接口，字段缺失时阻止流转并返回缺失项",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-10-002"
+      ],
+      "deliverables": [
+        "溯源字段校验接口"
+      ],
+      "acceptance_criteria": [
+        "溯源缺失时 100% 阻止进入已审核",
+        "返回具体缺失字段清单"
+      ],
+      "status": "未开始",
+      "prd_reference": "10. 产出物管理"
+    },
+    {
+      "wbs_id": "WBS-BA-10.5-001",
+      "task_name": "里程碑产出物聚合接口",
+      "description": "实现按里程碑节点聚合其下全部产出物接口，覆盖各迭代与原子任务，支持验收页一次拉取",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-10.1-001"
+      ],
+      "deliverables": [
+        "里程碑产出物聚合接口"
+      ],
+      "acceptance_criteria": [
+        "聚合结果覆盖该节点全部产出物且无遗漏",
+        "1000 条以内聚合查询 P95 ≤1s"
+      ],
+      "status": "未开始",
+      "prd_reference": "10. 产出物管理"
+    },
+    {
+      "wbs_id": "WBS-BF-10.1-001",
+      "task_name": "产出物列表与编辑页面",
+      "description": "实现产出物列表、状态徽标、编辑器与审核操作按钮，支持按节点与状态筛选",
+      "task_type": "后台前端开发",
+      "estimated_hours": 5,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-10.1-001",
+        "WBS-BA-10.2-001"
+      ],
+      "deliverables": [
+        "产出物列表页与编辑器组件"
+      ],
+      "acceptance_criteria": [
+        "1000 条列表加载 ≤1s",
+        "状态徽标清晰且与接口状态一致"
+      ],
+      "status": "未开始",
+      "prd_reference": "10. 产出物管理"
+    },
+    {
+      "wbs_id": "WBS-BF-10.2-001",
+      "task_name": "版本时间线与差异对比页面",
+      "description": "实现版本列表、版本时间线与差异逐行高亮对比，提供回滚二次确认与影响范围展示",
+      "task_type": "后台前端开发",
+      "estimated_hours": 5,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-10.3-001"
+      ],
+      "deliverables": [
+        "版本时间线页与差异对比组件"
+      ],
+      "acceptance_criteria": [
+        "差异逐行高亮准确",
+        "回滚 ≤2 步完成并展示影响范围"
+      ],
+      "status": "未开始",
+      "prd_reference": "10. 产出物管理"
+    },
+    {
+      "wbs_id": "WBS-BF-10.3-001",
+      "task_name": "里程碑验收聚合页面",
+      "description": "实现里程碑验收聚合页，展示本节点全部产出物、版本与审核状态，支持批量查看",
+      "task_type": "后台前端开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-10.5-001"
+      ],
+      "deliverables": [
+        "里程碑验收聚合页"
+      ],
+      "acceptance_criteria": [
+        "聚合列表与接口返回完全一致",
+        "节点缺失或溯源缺失时给出处理入口"
+      ],
+      "status": "未开始",
+      "prd_reference": "10. 产出物管理"
+    },
+    {
+      "wbs_id": "WBS-JT-10-001",
+      "task_name": "产出物流转与回滚联调测试",
+      "description": "联调产出物挂载、状态流转、版本升版、版本回滚与里程碑聚合全流程",
+      "task_type": "联调测试",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BF-10.1-001",
+        "WBS-BF-10.2-001",
+        "WBS-BF-10.3-001"
+      ],
+      "deliverables": [
+        "联调测试用例与测试记录"
+      ],
+      "acceptance_criteria": [
+        "状态机与版本回滚测试全部通过",
+        "里程碑聚合完整无遗漏"
+      ],
+      "status": "未开始",
+      "prd_reference": "10. 产出物管理"
+    },
+    {
+      "wbs_id": "WBS-DB-12-001",
+      "task_name": "动作日志与链路表结构设计",
+      "description": "设计 action_log 表，存储链路ID、Agent、动作、对象、T等级、模式、结果、耗时与时间",
+      "task_type": "数据库设计",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [],
+      "deliverables": [
+        "action_log 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "日志支持按链路ID、任务、时间、Agent 检索",
+        "链路字段可串联同一任务全部动作"
+      ],
+      "status": "已完成",
+      "prd_reference": "12. 日志库与简报"
+    },
+    {
+      "wbs_id": "WBS-DB-12-002",
+      "task_name": "简报与超时检测表结构设计",
+      "description": "设计 log_briefing、timeout_record 表，存储周期、待办、风险、待验收、熔断与降级次数及超时节点、责任人、超时时长",
+      "task_type": "数据库设计",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-12-001"
+      ],
+      "deliverables": [
+        "log_briefing/timeout_record 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "简报按周期可查询且指标字段齐全",
+        "超时记录含节点与责任人"
+      ],
+      "status": "已完成",
+      "prd_reference": "12. 日志库与简报"
+    },
+    {
+      "wbs_id": "WBS-BA-12.1-001",
+      "task_name": "动作日志写入接口",
+      "description": "实现各层动作实时写入日志接口，携带链路ID，写入失败本地缓冲重试且不阻塞主流程",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-12-001"
+      ],
+      "deliverables": [
+        "动作日志写入接口与缓冲重试机制"
+      ],
+      "acceptance_criteria": [
+        "日志写入 P95 ≤200ms",
+        "写入失败不阻塞业务且可自动重试"
+      ],
+      "status": "未开始",
+      "prd_reference": "12. 日志库与简报"
+    },
+    {
+      "wbs_id": "WBS-BA-12.2-001",
+      "task_name": "围栏与审核记录写入接口",
+      "description": "实现围栏命中规则、校验结果、降级原因与审核提交人、审核人、结果、意见的同步写入接口",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-12-001"
+      ],
+      "deliverables": [
+        "围栏记录与审核记录写入接口"
+      ],
+      "acceptance_criteria": [
+        "围栏触发与审核结果 100% 留痕",
+        "记录可按任务与链路查询"
+      ],
+      "status": "未开始",
+      "prd_reference": "12. 日志库与简报"
+    },
+    {
+      "wbs_id": "WBS-BA-12.3-001",
+      "task_name": "日志检索与链路追溯接口",
+      "description": "实现按任务、时间、Agent、结果多条件检索日志接口，支持同一链路日志串联返回",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-12.1-001"
+      ],
+      "deliverables": [
+        "日志检索与链路追溯接口"
+      ],
+      "acceptance_criteria": [
+        "1 万条日志检索 ≤2s",
+        "检索无结果时返回检索条件与范围说明"
+      ],
+      "status": "未开始",
+      "prd_reference": "12. 日志库与简报"
+    },
+    {
+      "wbs_id": "WBS-BA-12.4-001",
+      "task_name": "定时简报生成接口",
+      "description": "实现按周期聚合待办、风险、待验收、熔断与降级次数并生成简报接口，生成失败告警并重试",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-12-002"
+      ],
+      "deliverables": [
+        "定时简报生成接口"
+      ],
+      "acceptance_criteria": [
+        "简报按周期自动生成且含四类指标",
+        "生成失败触发告警并重试"
+      ],
+      "status": "未开始",
+      "prd_reference": "12. 日志库与简报"
+    },
+    {
+      "wbs_id": "WBS-BA-12.5-001",
+      "task_name": "节点超时检测接口",
+      "description": "实现扫描任务节点并检出超时项接口，超时 ≤5 分钟检出并告警，不自动对外催办",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-12-002"
+      ],
+      "deliverables": [
+        "节点超时检测接口"
+      ],
+      "acceptance_criteria": [
+        "超时节点 ≤5 分钟检出",
+        "仅生成内部告警，不触发外发"
+      ],
+      "status": "未开始",
+      "prd_reference": "12. 日志库与简报"
+    },
+    {
+      "wbs_id": "WBS-BA-12.6-001",
+      "task_name": "敏感信息脱敏过滤",
+      "description": "实现日志写入前的凭据、密钥等敏感信息识别与脱敏过滤，确保敏感字段不落库",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-12.1-001"
+      ],
+      "deliverables": [
+        "敏感信息脱敏过滤器"
+      ],
+      "acceptance_criteria": [
+        "凭据与密钥 100% 不出现在日志中",
+        "脱敏规则可配置且不影响日志结构"
+      ],
+      "status": "未开始",
+      "prd_reference": "12. 日志库与简报"
+    },
+    {
+      "wbs_id": "WBS-BF-12.1-001",
+      "task_name": "日志检索与链路详情页面",
+      "description": "实现检索条件区、日志表格与链路详情抽屉，同一链路日志可串联查看",
+      "task_type": "后台前端开发",
+      "estimated_hours": 5,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-12.3-001"
+      ],
+      "deliverables": [
+        "日志检索页与链路详情组件"
+      ],
+      "acceptance_criteria": [
+        "一次检索 ≤2 步",
+        "链路详情按时间顺序完整展示"
+      ],
+      "status": "未开始",
+      "prd_reference": "12. 日志库与简报"
+    },
+    {
+      "wbs_id": "WBS-BF-12.2-001",
+      "task_name": "简报与超时列表页面",
+      "description": "实现简报摘要卡、超时列表与关键项跳转详情，简报一屏可读",
+      "task_type": "后台前端开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-12.4-001",
+        "WBS-BA-12.5-001"
+      ],
+      "deliverables": [
+        "简报页与超时列表组件"
+      ],
+      "acceptance_criteria": [
+        "简报 1 屏可读且关键项可跳转",
+        "超时项按超时时长排序展示"
+      ],
+      "status": "未开始",
+      "prd_reference": "12. 日志库与简报"
+    },
+    {
+      "wbs_id": "WBS-JT-12-001",
+      "task_name": "日志链路与简报联调测试",
+      "description": "联调动作留痕、围栏与审核记录、链路检索、简报生成与超时检测全流程",
+      "task_type": "联调测试",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BF-12.1-001",
+        "WBS-BF-12.2-001"
+      ],
+      "deliverables": [
+        "联调测试用例与测试记录"
+      ],
+      "acceptance_criteria": [
+        "动作留痕率抽查 100%",
+        "敏感凭据不出现在日志中且写入失败不阻塞业务"
+      ],
+      "status": "未开始",
+      "prd_reference": "12. 日志库与简报"
+    },
+    {
+      "wbs_id": "WBS-DB-3-001",
+      "task_name": "规划与规划节点表结构设计",
+      "description": "设计 project_plan、plan_node 表，存储项目名称、总周期、里程碑/迭代/原子任务节点、产出物、验收标准与引用片段",
+      "task_type": "数据库设计",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [],
+      "deliverables": [
+        "project_plan/plan_node 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "规划节点支持四级层级与验收标准字段",
+        "引用片段字段可关联事实库"
+      ],
+      "status": "已完成",
+      "prd_reference": "3. L1 项目 Agent"
+    },
+    {
+      "wbs_id": "WBS-DB-3-002",
+      "task_name": "规划版本与进度摘要表结构设计",
+      "description": "设计 plan_version、progress_summary 表，存储规划历史版本、审核意见与进度百分比、风险项、阻塞项、待验收项",
+      "task_type": "数据库设计",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-3-001"
+      ],
+      "deliverables": [
+        "plan_version/progress_summary 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "每次驳回重规划生成新版本可回溯",
+        "摘要字段与任务状态可对齐"
+      ],
+      "status": "已完成",
+      "prd_reference": "3. L1 项目 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-3.1-001",
+      "task_name": "需求拆解接口",
+      "description": "实现自然语言需求转结构化需求条目接口，输出交付范围与关键约束，缺失关键事实时列出待补项",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-3-001"
+      ],
+      "deliverables": [
+        "需求拆解接口"
+      ],
+      "acceptance_criteria": [
+        "需求条目含交付范围与约束字段",
+        "关键事实缺失时返回缺失清单而非直接规划"
+      ],
+      "status": "未开始",
+      "prd_reference": "3. L1 项目 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-3.2-001",
+      "task_name": "四级项目规划生成接口",
+      "description": "实现读取事实库模板并生成项目/里程碑/迭代/原子任务四级规划接口，含每级验收标准，审核通过前不实例化",
+      "task_type": "后台API开发",
+      "estimated_hours": 6,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-3.1-001"
+      ],
+      "deliverables": [
+        "四级规划生成接口"
+      ],
+      "acceptance_criteria": [
+        "规划生成 ≤60s 且四级结构完整",
+        "审核通过前不产生 L2 任务实例"
+      ],
+      "status": "未开始",
+      "prd_reference": "3. L1 项目 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-3.3-001",
+      "task_name": "节点时间计算接口",
+      "description": "实现依据总周期与任务依赖计算里程碑、迭代与原子任务节点时间接口，周期不足时返回冲突项与压缩建议",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-3-001"
+      ],
+      "deliverables": [
+        "节点时间计算接口"
+      ],
+      "acceptance_criteria": [
+        "节点时间与总周期、依赖关系一致",
+        "周期不足时返回具体冲突节点与压缩建议"
+      ],
+      "status": "未开始",
+      "prd_reference": "3. L1 项目 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-3.4-001",
+      "task_name": "产出物与验收标准绑定接口",
+      "description": "实现为规划中每个原子任务绑定产出物与验收标准接口，并支持审核通过后交 L2 实例化",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-3.2-001"
+      ],
+      "deliverables": [
+        "产出物与验收标准绑定接口"
+      ],
+      "acceptance_criteria": [
+        "每个原子任务至少绑定 1 个产出物与验收标准",
+        "绑定缺失时阻止提交审核"
+      ],
+      "status": "未开始",
+      "prd_reference": "3. L1 项目 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-3.5-001",
+      "task_name": "项目进度摘要接口",
+      "description": "实现汇总执行进度、风险与阻塞项、待验收项的进度摘要接口，数据与 L2 任务状态一致",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-3-002"
+      ],
+      "deliverables": [
+        "进度摘要接口"
+      ],
+      "acceptance_criteria": [
+        "摘要生成 ≤10s",
+        "进度百分比与实际完成任务数一致"
+      ],
+      "status": "未开始",
+      "prd_reference": "3. L1 项目 Agent"
+    },
+    {
+      "wbs_id": "WBS-BF-3.1-001",
+      "task_name": "规划树与节点时间轴页面",
+      "description": "实现可折叠规划树、节点时间轴与引用标注，展示四级结构与每级验收标准",
+      "task_type": "后台前端开发",
+      "estimated_hours": 6,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-3.2-001",
+        "WBS-BA-3.3-001"
+      ],
+      "deliverables": [
+        "规划预览页与时间轴组件"
+      ],
+      "acceptance_criteria": [
+        "规划树支持展开折叠且层级清晰",
+        "节点时间与接口计算值一致"
+      ],
+      "status": "未开始",
+      "prd_reference": "3. L1 项目 Agent"
+    },
+    {
+      "wbs_id": "WBS-BF-3.2-001",
+      "task_name": "规划审核与差异高亮页面",
+      "description": "实现审核意见区、修改前后差异高亮与通过/驳回操作，驳回必须填写意见",
+      "task_type": "后台前端开发",
+      "estimated_hours": 5,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-3.4-001",
+        "WBS-BA-3.5-001"
+      ],
+      "deliverables": [
+        "规划审核页与差异高亮组件"
+      ],
+      "acceptance_criteria": [
+        "修改前后差异逐项高亮",
+        "驳回未填意见时不可提交"
+      ],
+      "status": "未开始",
+      "prd_reference": "3. L1 项目 Agent"
+    },
+    {
+      "wbs_id": "WBS-JT-3-001",
+      "task_name": "规划生成到审核联调测试",
+      "description": "联调需求拆解、模板检索、四级规划生成、节点计算、审核与 L2 实例化全流程",
+      "task_type": "联调测试",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BF-3.1-001",
+        "WBS-BF-3.2-001"
+      ],
+      "deliverables": [
+        "联调测试用例与测试记录"
+      ],
+      "acceptance_criteria": [
+        "四级规划与验收标准完整率 100%",
+        "驳回重规划保留历史版本且不产生任务实例"
+      ],
+      "status": "未开始",
+      "prd_reference": "3. L1 项目 Agent"
+    },
+    {
+      "wbs_id": "WBS-DB-2-001",
+      "task_name": "线索与客户档案表结构设计",
+      "description": "设计 lead_record、customer_profile 表，存储来源、姓名/公司、联系方式、需求摘要、当前阶段、分层标签与交互摘要",
+      "task_type": "数据库设计",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [],
+      "deliverables": [
+        "lead_record/customer_profile 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "线索关键字段齐备且缺失项可标记待补",
+        "客户档案与线索可关联追溯"
+      ],
+      "status": "已完成",
+      "prd_reference": "2. L1 客户 Agent"
+    },
+    {
+      "wbs_id": "WBS-DB-2-002",
+      "task_name": "跟进 SOP 与 FAQ 草稿表结构设计",
+      "description": "设计 followup_sop、faq_draft 表，存储阶段、建议动作、时限及问题、引用片段、回复文本",
+      "task_type": "数据库设计",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-2-001"
+      ],
+      "deliverables": [
+        "followup_sop/faq_draft 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "SOP 按客户阶段可检索",
+        "FAQ 草稿强制关联引用片段字段"
+      ],
+      "status": "已完成",
+      "prd_reference": "2. L1 客户 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-2.1-001",
+      "task_name": "线索结构化接口",
+      "description": "实现从对话或表单提取客户关键字段接口，标注缺失项与重复线索，重复时提示合并并保留全部来源",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-2-001"
+      ],
+      "deliverables": [
+        "线索结构化接口"
+      ],
+      "acceptance_criteria": [
+        "结构化响应 ≤5s 且关键字段完整",
+        "重复线索返回合并提示并保留来源"
+      ],
+      "status": "未开始",
+      "prd_reference": "2. L1 客户 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-2.2-001",
+      "task_name": "客户档案维护接口",
+      "description": "实现客户档案写入、查询与编辑接口，与事实库保持一致，权限不足时拒绝访问并留痕",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-2-001"
+      ],
+      "deliverables": [
+        "客户档案 CRUD 接口"
+      ],
+      "acceptance_criteria": [
+        "档案写入后事实库可检索到一致内容",
+        "越权访问被拒绝并记录留痕"
+      ],
+      "status": "未开始",
+      "prd_reference": "2. L1 客户 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-2.3-001",
+      "task_name": "跟进 SOP 建议接口",
+      "description": "实现按客户阶段生成跟进动作建议与时限接口，输出建议动作清单供主人确认",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-2-002"
+      ],
+      "deliverables": [
+        "跟进 SOP 建议接口"
+      ],
+      "acceptance_criteria": [
+        "不同阶段返回对应建议动作与时限",
+        "无 SOP 配置时返回明确提示"
+      ],
+      "status": "未开始",
+      "prd_reference": "2. L1 客户 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-2.4-001",
+      "task_name": "FAQ 应答草稿接口",
+      "description": "实现基于知识库生成 FAQ 回复草稿接口，100% 携带引用片段，无知识可答时转人工而不编造",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-2-002"
+      ],
+      "deliverables": [
+        "FAQ 草稿生成接口"
+      ],
+      "acceptance_criteria": [
+        "草稿生成 ≤5s 且 100% 含引用片段",
+        "无知识可答时返回转人工状态"
+      ],
+      "status": "未开始",
+      "prd_reference": "2. L1 客户 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-2.5-001",
+      "task_name": "标签分层与人工修正接口",
+      "description": "实现自动打客户标签与分层接口，支持人工修正并记录修正人与时间，标签冲突以主人确认为准",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-2.2-001"
+      ],
+      "deliverables": [
+        "标签分层与修正接口"
+      ],
+      "acceptance_criteria": [
+        "标签冲突时返回待确认状态",
+        "人工修正 100% 留痕"
+      ],
+      "status": "未开始",
+      "prd_reference": "2. L1 客户 Agent"
+    },
+    {
+      "wbs_id": "WBS-BF-2.1-001",
+      "task_name": "线索列表与客户档案页面",
+      "description": "实现线索卡片列表、档案表单与缺失字段高亮，支持一屏内完成线索确认",
+      "task_type": "后台前端开发",
+      "estimated_hours": 5,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-2.1-001",
+        "WBS-BA-2.2-001"
+      ],
+      "deliverables": [
+        "线索列表页与客户档案组件"
+      ],
+      "acceptance_criteria": [
+        "线索确认一屏内完成",
+        "缺失字段高亮并给出补充提示"
+      ],
+      "status": "未开始",
+      "prd_reference": "2. L1 客户 Agent"
+    },
+    {
+      "wbs_id": "WBS-BF-2.2-001",
+      "task_name": "跟进看板与草稿审核页面",
+      "description": "实现跟进时间线看板、回复草稿编辑器与审核区，草稿可一键复制并保留原版本",
+      "task_type": "后台前端开发",
+      "estimated_hours": 5,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-2.3-001",
+        "WBS-BA-2.4-001"
+      ],
+      "deliverables": [
+        "跟进看板页与草稿审核组件"
+      ],
+      "acceptance_criteria": [
+        "草稿可一键复制且保留修改前版本",
+        "重复线索、信息冲突、无知识可答均有明确提示"
+      ],
+      "status": "未开始",
+      "prd_reference": "2. L1 客户 Agent"
+    },
+    {
+      "wbs_id": "WBS-JT-2-001",
+      "task_name": "客户线索到草稿联调测试",
+      "description": "联调线索结构化、客户建档、SOP 建议与 FAQ 草稿生成并提交审核全流程",
+      "task_type": "联调测试",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BF-2.1-001",
+        "WBS-BF-2.2-001"
+      ],
+      "deliverables": [
+        "联调测试用例与测试记录"
+      ],
+      "acceptance_criteria": [
+        "FAQ 草稿 100% 携带引用且无主动外发",
+        "重复线索与标签冲突场景按 PRD 处理"
+      ],
+      "status": "未开始",
+      "prd_reference": "2. L1 客户 Agent"
+    },
+    {
+      "wbs_id": "WBS-DB-4-001",
+      "task_name": "选题与稿件表结构设计",
+      "description": "设计 content_topic、content_draft 表，存储选题标题、角度、依据片段与体裁、正文、引用、版本字段",
+      "task_type": "数据库设计",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [],
+      "deliverables": [
+        "content_topic/content_draft 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "稿件支持多体裁与版本字段",
+        "选题可关联依据片段"
+      ],
+      "status": "已完成",
+      "prd_reference": "4. L1 内容 Agent"
+    },
+    {
+      "wbs_id": "WBS-DB-4-002",
+      "task_name": "风格模板与自检记录表结构设计",
+      "description": "设计 style_binding、sensitive_check_record 表，存储偏好模板ID、禁用表达与敏感词命中位置、替换建议、处理结果",
+      "task_type": "数据库设计",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-4-001"
+      ],
+      "deliverables": [
+        "style_binding/sensitive_check_record 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "自检记录可定位到具体句子",
+        "风格绑定可关联偏好模板"
+      ],
+      "status": "已完成",
+      "prd_reference": "4. L1 内容 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-4.1-001",
+      "task_name": "选题衍生接口",
+      "description": "实现基于事实库与历史内容生成多角度选题接口，标注依据片段，无相关事实时提示补充素材",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-4-001"
+      ],
+      "deliverables": [
+        "选题衍生接口"
+      ],
+      "acceptance_criteria": [
+        "每次返回不少于 3 个选题角度",
+        "无事实依据时返回补充素材提示"
+      ],
+      "status": "未开始",
+      "prd_reference": "4. L1 内容 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-4.2-001",
+      "task_name": "多体裁改写接口",
+      "description": "实现文章、脚本、文案互转接口，改写保留原稿并生成新版本，标注引用片段",
+      "task_type": "后台API开发",
+      "estimated_hours": 5,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-4-001"
+      ],
+      "deliverables": [
+        "多体裁改写接口"
+      ],
+      "acceptance_criteria": [
+        "体裁切换一次请求完成且保留原稿",
+        "改写结果 100% 携带引用片段"
+      ],
+      "status": "未开始",
+      "prd_reference": "4. L1 内容 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-4.3-001",
+      "task_name": "脚本文案生成接口",
+      "description": "实现口播与分镜脚本生成接口，输出分镜段落与时长建议，超长时给出裁剪建议",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-4.2-001"
+      ],
+      "deliverables": [
+        "脚本文案生成接口"
+      ],
+      "acceptance_criteria": [
+        "脚本含口播与分镜两类输出",
+        "内容超长时返回目标字数与裁剪建议"
+      ],
+      "status": "未开始",
+      "prd_reference": "4. L1 内容 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-4.4-001",
+      "task_name": "风格对齐接口",
+      "description": "实现按偏好模板统一表达风格接口，冲突时以偏好模板为准并提示差异",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-4-002"
+      ],
+      "deliverables": [
+        "风格对齐接口"
+      ],
+      "acceptance_criteria": [
+        "禁用表达 100% 被识别",
+        "风格冲突返回差异说明"
+      ],
+      "status": "未开始",
+      "prd_reference": "4. L1 内容 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-4.5-001",
+      "task_name": "敏感词自检接口",
+      "description": "实现发布前敏感词检测接口，命中项标红并给出替换建议，未自检草稿禁止提交审核",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-4-002"
+      ],
+      "deliverables": [
+        "敏感词自检接口"
+      ],
+      "acceptance_criteria": [
+        "草稿提交审核前 100% 经过自检",
+        "命中项返回具体句子位置与替换建议"
+      ],
+      "status": "未开始",
+      "prd_reference": "4. L1 内容 Agent"
+    },
+    {
+      "wbs_id": "WBS-BF-4.1-001",
+      "task_name": "选题池与内容编辑器页面",
+      "description": "实现左侧选题池、中间编辑器与体裁切换控件，改写保留原稿并支持版本切换",
+      "task_type": "后台前端开发",
+      "estimated_hours": 6,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-4.1-001",
+        "WBS-BA-4.2-001"
+      ],
+      "deliverables": [
+        "选题池页与内容编辑器组件"
+      ],
+      "acceptance_criteria": [
+        "体裁切换 ≤1 次点击",
+        "改写前后原稿可对比且不丢失"
+      ],
+      "status": "未开始",
+      "prd_reference": "4. L1 内容 Agent"
+    },
+    {
+      "wbs_id": "WBS-BF-4.2-001",
+      "task_name": "自检与引用面板页面",
+      "description": "实现右侧敏感词自检面板与引用列表，命中项可一键替换或忽略并留痕",
+      "task_type": "后台前端开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-4.4-001",
+        "WBS-BA-4.5-001"
+      ],
+      "deliverables": [
+        "自检面板与引用列表组件"
+      ],
+      "acceptance_criteria": [
+        "自检结果定位到具体句子",
+        "一键替换与忽略操作均写入留痕"
+      ],
+      "status": "未开始",
+      "prd_reference": "4. L1 内容 Agent"
+    },
+    {
+      "wbs_id": "WBS-JT-4-001",
+      "task_name": "内容生产链路联调测试",
+      "description": "联调选题衍生、多体裁改写、脚本文案、风格对齐与敏感词自检全流程",
+      "task_type": "联调测试",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BF-4.1-001",
+        "WBS-BF-4.2-001"
+      ],
+      "deliverables": [
+        "联调测试用例与测试记录"
+      ],
+      "acceptance_criteria": [
+        "五项内容能力均可产出草稿且引用可溯源",
+        "未自检草稿无法提交审核"
+      ],
+      "status": "未开始",
+      "prd_reference": "4. L1 内容 Agent"
+    },
+    {
+      "wbs_id": "WBS-DB-5-001",
+      "task_name": "纪要与日程表结构设计",
+      "description": "设计 meeting_minutes、schedule_item 表，存储议题、结论、待办、责任人、截止时间、置信度与时间、参与人、地点、冲突标记",
+      "task_type": "数据库设计",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [],
+      "deliverables": [
+        "meeting_minutes/schedule_item 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "纪要四要素字段完整",
+        "日程冲突标记可查询"
+      ],
+      "status": "已完成",
+      "prd_reference": "5. L1 事务 Agent"
+    },
+    {
+      "wbs_id": "WBS-DB-5-002",
+      "task_name": "邮件草稿与冲突记录表结构设计",
+      "description": "设计 mail_draft、schedule_conflict 表，存储收件人、主题、正文、附件与冲突时段、可选时段",
+      "task_type": "数据库设计",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-5-001"
+      ],
+      "deliverables": [
+        "mail_draft/schedule_conflict 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "邮件草稿仅存储不发送，无发送状态字段",
+        "冲突记录含可选时段"
+      ],
+      "status": "已完成",
+      "prd_reference": "5. L1 事务 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-5.1-001",
+      "task_name": "语音转写与纪要结构化接口",
+      "description": "实现语音转写并结构化输出议题、结论、待办、责任人四要素接口，低置信区间标注提示人工校对",
+      "task_type": "后台API开发",
+      "estimated_hours": 5,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-5-001"
+      ],
+      "deliverables": [
+        "语音转写与纪要结构化接口"
+      ],
+      "acceptance_criteria": [
+        "30 分钟录音生成纪要 ≤3 分钟",
+        "低置信内容 100% 标注"
+      ],
+      "status": "未开始",
+      "prd_reference": "5. L1 事务 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-5.2-001",
+      "task_name": "日程与待办生成接口",
+      "description": "实现从纪要生成日程与待办建议接口，不擅自写入他人日历，待办支持流转至 L2 任务树",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-5-001"
+      ],
+      "deliverables": [
+        "日程与待办生成接口"
+      ],
+      "acceptance_criteria": [
+        "生成的待办可流转至 L2 任务树",
+        "写入他人日历时返回需确认提示"
+      ],
+      "status": "未开始",
+      "prd_reference": "5. L1 事务 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-5.3-001",
+      "task_name": "邮件初稿接口",
+      "description": "实现基于上下文起草邮件接口，输出收件人、主题、正文与附件建议，关键信息缺失时列出待补项",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-5-002"
+      ],
+      "deliverables": [
+        "邮件初稿生成接口"
+      ],
+      "acceptance_criteria": [
+        "仅生成草稿，无任何发送调用",
+        "关键信息缺失时返回待补项清单"
+      ],
+      "status": "未开始",
+      "prd_reference": "5. L1 事务 Agent"
+    },
+    {
+      "wbs_id": "WBS-BA-5.4-001",
+      "task_name": "时间冲突校验接口",
+      "description": "实现日程时间冲突与重复待办检测接口，返回冲突时段与可选时段，重复待办提示合并或忽略",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-5.2-001"
+      ],
+      "deliverables": [
+        "时间冲突校验接口"
+      ],
+      "acceptance_criteria": [
+        "冲突校验 ≤2s 且冲突 100% 检出",
+        "返回至少 2 个可选时段"
+      ],
+      "status": "未开始",
+      "prd_reference": "5. L1 事务 Agent"
+    },
+    {
+      "wbs_id": "WBS-BF-5.1-001",
+      "task_name": "纪要编辑器与日程建议页面",
+      "description": "实现纪要编辑器、低置信高亮与日程建议卡片，支持一键采纳建议日程",
+      "task_type": "后台前端开发",
+      "estimated_hours": 5,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-5.1-001",
+        "WBS-BA-5.2-001"
+      ],
+      "deliverables": [
+        "纪要编辑页与日程建议组件"
+      ],
+      "acceptance_criteria": [
+        "低置信内容高亮可定位",
+        "千字纪要校对修改 ≤3 处"
+      ],
+      "status": "未开始",
+      "prd_reference": "5. L1 事务 Agent"
+    },
+    {
+      "wbs_id": "WBS-BF-5.2-001",
+      "task_name": "冲突提示与邮件草稿页面",
+      "description": "实现冲突提示区、可选时段一键替换与邮件草稿预览，展示待补关键信息",
+      "task_type": "后台前端开发",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BA-5.3-001",
+        "WBS-BA-5.4-001"
+      ],
+      "deliverables": [
+        "冲突提示组件与邮件草稿页"
+      ],
+      "acceptance_criteria": [
+        "更换冲突时段 ≤2 步",
+        "草稿预览展示全部待补项"
+      ],
+      "status": "未开始",
+      "prd_reference": "5. L1 事务 Agent"
+    },
+    {
+      "wbs_id": "WBS-JT-5-001",
+      "task_name": "事务处理链路联调测试",
+      "description": "联调语音纪要、日程待办生成、冲突校验与邮件草稿提交审核全流程",
+      "task_type": "联调测试",
+      "estimated_hours": 4,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BF-5.1-001",
+        "WBS-BF-5.2-001"
+      ],
+      "deliverables": [
+        "联调测试用例与测试记录"
+      ],
+      "acceptance_criteria": [
+        "纪要四要素与冲突检出测试通过",
+        "邮件无发送行为，待办可流转 L2"
+      ],
+      "status": "未开始",
+      "prd_reference": "5. L1 事务 Agent"
+    },
+    {
+      "wbs_id": "WBS-DB-13-001",
+      "task_name": "渠道配置表结构设计",
+      "description": "设计 channel_config 表，存储渠道类型、账号、状态与鉴权有效期",
+      "task_type": "数据库设计",
+      "estimated_hours": 3,
+      "priority": "P2",
+      "dependencies": [],
+      "deliverables": [
+        "channel_config 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "五类渠道类型可配置",
+        "鉴权有效期可查询并支持失效判定"
+      ],
+      "status": "已完成",
+      "prd_reference": "13. 外部触点集成"
+    },
+    {
+      "wbs_id": "WBS-DB-13-002",
+      "task_name": "事件与内外发记录表结构设计",
+      "description": "设计 external_event、outbound_record 表，存储事件来源、原始内容、归一化字段、幂等键与目标、内容、校验结果、回执状态",
+      "task_type": "数据库设计",
+      "estimated_hours": 4,
+      "priority": "P2",
+      "dependencies": [
+        "WBS-DB-13-001"
+      ],
+      "deliverables": [
+        "external_event/outbound_record 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "事件幂等键唯一约束生效",
+        "外发记录含校验结果与回执状态"
+      ],
+      "status": "已完成",
+      "prd_reference": "13. 外部触点集成"
+    },
+    {
+      "wbs_id": "WBS-BA-13.1-001",
+      "task_name": "渠道接入配置接口",
+      "description": "实现微信、邮箱、日历、云文档、内容平台五类渠道的接入配置、状态查询与鉴权校验接口",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P2",
+      "dependencies": [
+        "WBS-DB-13-001"
+      ],
+      "deliverables": [
+        "渠道接入配置接口"
+      ],
+      "acceptance_criteria": [
+        "五类渠道均可完成接入配置并返回状态",
+        "未授权渠道接入被拒绝并留痕"
+      ],
+      "status": "未开始",
+      "prd_reference": "13. 外部触点集成"
+    },
+    {
+      "wbs_id": "WBS-BA-13.2-001",
+      "task_name": "事件流入归一化接口",
+      "description": "实现外部事件接收、归一化为内部事件并按幂等键去重后路由 L0 的接口",
+      "task_type": "后台API开发",
+      "estimated_hours": 5,
+      "priority": "P2",
+      "dependencies": [
+        "WBS-DB-13-002"
+      ],
+      "deliverables": [
+        "事件流入与归一化接口"
+      ],
+      "acceptance_criteria": [
+        "事件入库 ≤2s",
+        "重复事件按幂等键去重且不重复处理"
+      ],
+      "status": "未开始",
+      "prd_reference": "13. 外部触点集成"
+    },
+    {
+      "wbs_id": "WBS-BA-13.3-001",
+      "task_name": "外发通道发送接口",
+      "description": "实现经 L0 围栏校验通过后经对应渠道发送接口，T1 类外发强制进审核队列，失败按策略重试并告警",
+      "task_type": "后台API开发",
+      "estimated_hours": 5,
+      "priority": "P2",
+      "dependencies": [
+        "WBS-DB-13-002"
+      ],
+      "deliverables": [
+        "外发通道发送接口"
+      ],
+      "acceptance_criteria": [
+        "对外发送 100% 携带围栏校验通过凭证",
+        "重试达上限后转人工并告警"
+      ],
+      "status": "未开始",
+      "prd_reference": "13. 外部触点集成"
+    },
+    {
+      "wbs_id": "WBS-BA-13.4-001",
+      "task_name": "发送回执回写接口",
+      "description": "实现发送回执状态回写产出物与日志接口，回执异常标记并支持一键重试",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P2",
+      "dependencies": [
+        "WBS-BA-13.3-001"
+      ],
+      "deliverables": [
+        "发送回执回写接口"
+      ],
+      "acceptance_criteria": [
+        "回执 ≤5s 回写至产出物",
+        "回执异常可查询并可重试"
+      ],
+      "status": "未开始",
+      "prd_reference": "13. 外部触点集成"
+    },
+    {
+      "wbs_id": "WBS-BF-13.1-001",
+      "task_name": "渠道配置与状态页面",
+      "description": "实现渠道状态卡、配置表单与异常顶部横幅，展示鉴权有效期与暂停外发状态",
+      "task_type": "后台前端开发",
+      "estimated_hours": 4,
+      "priority": "P2",
+      "dependencies": [
+        "WBS-BA-13.1-001"
+      ],
+      "deliverables": [
+        "渠道配置页与状态卡组件"
+      ],
+      "acceptance_criteria": [
+        "渠道状态一目了然且异常横幅提示",
+        "鉴权失效渠道外发入口自动禁用"
+      ],
+      "status": "未开始",
+      "prd_reference": "13. 外部触点集成"
+    },
+    {
+      "wbs_id": "WBS-BF-13.2-001",
+      "task_name": "事件列表与外发记录页面",
+      "description": "实现事件列表、事件详情与外发记录表，失败项支持一键重试或转人工",
+      "task_type": "后台前端开发",
+      "estimated_hours": 5,
+      "priority": "P2",
+      "dependencies": [
+        "WBS-BA-13.2-001",
+        "WBS-BA-13.4-001"
+      ],
+      "deliverables": [
+        "事件列表页与外发记录组件"
+      ],
+      "acceptance_criteria": [
+        "失败处理 ≤1 次点击重试或转人工",
+        "重复事件在列表中有明确标记"
+      ],
+      "status": "未开始",
+      "prd_reference": "13. 外部触点集成"
+    },
+    {
+      "wbs_id": "WBS-JT-13-001",
+      "task_name": "事件流入到外发回执联调测试",
+      "description": "联调渠道接入、事件流入归一化、围栏校验、外发发送与回执回写全流程",
+      "task_type": "联调测试",
+      "estimated_hours": 4,
+      "priority": "P2",
+      "dependencies": [
+        "WBS-BF-13.1-001",
+        "WBS-BF-13.2-001"
+      ],
+      "deliverables": [
+        "联调测试用例与测试记录"
+      ],
+      "acceptance_criteria": [
+        "事件入库 ≤2s、外发确认 ≤5s",
+        "T1 外发无自动发送路径且重复事件不重复处理"
+      ],
+      "status": "未开始",
+      "prd_reference": "13. 外部触点集成"
+    },
+    {
+      "wbs_id": "WBS-DB-14-001",
+      "task_name": "链路实例与步骤记录表结构设计",
+      "description": "设计 chain_instance、chain_step 表，存储链路ID、任务ID、当前步骤、状态、耗时与每步输入快照、输出结果",
+      "task_type": "数据库设计",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [],
+      "deliverables": [
+        "chain_instance/chain_step 建表 DDL"
+      ],
+      "acceptance_criteria": [
+        "七步步骤记录可按链路顺序查询",
+        "每步输入输出快照字段完整"
+      ],
+      "status": "已完成",
+      "prd_reference": "14. 七步协作链路端到端编排"
+    },
+    {
+      "wbs_id": "WBS-BA-14.1-001",
+      "task_name": "七步链路状态机编排接口",
+      "description": "实现七步协作链路状态机与断点续跑编排接口，禁止跳步，任一步失败记录断点",
+      "task_type": "后台API开发",
+      "estimated_hours": 6,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-DB-14-001"
+      ],
+      "deliverables": [
+        "七步链路编排接口"
+      ],
+      "acceptance_criteria": [
+        "七步全链路贯通率 100% 且不可跳步",
+        "步骤切换 ≤1s 并记录当前步骤"
+      ],
+      "status": "未开始",
+      "prd_reference": "14. 七步协作链路端到端编排"
+    },
+    {
+      "wbs_id": "WBS-BA-14.2-001",
+      "task_name": "步骤上下文快照留存接口",
+      "description": "实现每一步输入输出快照留存与查询接口，支持断点恢复时读取上一步输出",
+      "task_type": "后台API开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-14.1-001"
+      ],
+      "deliverables": [
+        "步骤快照留存与查询接口"
+      ],
+      "acceptance_criteria": [
+        "每步输入输出 100% 留存",
+        "快照可按链路与步骤号查询"
+      ],
+      "status": "未开始",
+      "prd_reference": "14. 七步协作链路端到端编排"
+    },
+    {
+      "wbs_id": "WBS-BA-14.3-001",
+      "task_name": "断点恢复与人工接管接口",
+      "description": "实现失败断点重试、回退与人工接管接口，驳回可回到第 3 步重新规划并保留版本",
+      "task_type": "后台API开发",
+      "estimated_hours": 5,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-14.1-001"
+      ],
+      "deliverables": [
+        "断点恢复与人工接管接口"
+      ],
+      "acceptance_criteria": [
+        "断点可恢复且不跳步",
+        "驳回回到第 3 步并保留历史版本"
+      ],
+      "status": "未开始",
+      "prd_reference": "14. 七步协作链路端到端编排"
+    },
+    {
+      "wbs_id": "WBS-BA-14.4-001",
+      "task_name": "链路进度查询接口",
+      "description": "实现链路当前步骤、状态、各步耗时与结果查询接口，熔断时返回暂停状态",
+      "task_type": "后台API开发",
+      "estimated_hours": 3,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-DB-14-001"
+      ],
+      "deliverables": [
+        "链路进度查询接口"
+      ],
+      "acceptance_criteria": [
+        "返回七步状态与耗时且与步骤记录一致",
+        "熔断后状态可见为暂停"
+      ],
+      "status": "未开始",
+      "prd_reference": "14. 七步协作链路端到端编排"
+    },
+    {
+      "wbs_id": "WBS-BF-14.1-001",
+      "task_name": "链路进度条与步骤详情页面",
+      "description": "实现顶部七步进度条、当前步骤高亮、步骤详情与耗时统计展示",
+      "task_type": "后台前端开发",
+      "estimated_hours": 5,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-14.1-001",
+        "WBS-BA-14.2-001"
+      ],
+      "deliverables": [
+        "链路可视化页与进度条组件"
+      ],
+      "acceptance_criteria": [
+        "链路状态 1 屏可见",
+        "当前步骤高亮且耗时数据与接口一致"
+      ],
+      "status": "未开始",
+      "prd_reference": "14. 七步协作链路端到端编排"
+    },
+    {
+      "wbs_id": "WBS-BF-14.2-001",
+      "task_name": "断点操作与快照查看页面",
+      "description": "实现断点操作区与快照查看器，失败步骤给出原因与重试、转人工、回退三类操作",
+      "task_type": "后台前端开发",
+      "estimated_hours": 4,
+      "priority": "P0",
+      "dependencies": [
+        "WBS-BA-14.3-001",
+        "WBS-BA-14.4-001"
+      ],
+      "deliverables": [
+        "断点操作组件与快照查看器"
+      ],
+      "acceptance_criteria": [
+        "断点操作 ≤2 步完成",
+        "快照查看器展示该步完整输入输出"
+      ],
+      "status": "未开始",
+      "prd_reference": "14. 七步协作链路端到端编排"
+    },
+    {
+      "wbs_id": "WBS-JT-14-001",
+      "task_name": "七步链路端到端联调测试",
+      "description": "以客户品牌咨询项目示例场景联调七步链路全流程，覆盖断点、驳回、围栏不通过与熔断异常",
+      "task_type": "联调测试",
+      "estimated_hours": 6,
+      "priority": "P1",
+      "dependencies": [
+        "WBS-BF-14.1-001",
+        "WBS-BF-14.2-001"
+      ],
+      "deliverables": [
+        "端到端联调测试用例与测试记录"
+      ],
+      "acceptance_criteria": [
+        "示例场景七步完整跑通且每步快照可查",
+        "断点恢复、驳回回退与熔断中止均验证通过"
+      ],
+      "status": "未开始",
+      "prd_reference": "14. 七步协作链路端到端编排"
+    },
+    {
+      "wbs_id": "WBS-FF-1.1-001",
+      "task_name": "前台首页开发（五栏项目工作台）",
+      "description": "在 front-site 首页实现项目、里程碑/迭代、任务、会话记录、任务相关附件五栏工作台：宽屏五栏并排、平板两栏换行、移动端单栏堆叠，输出首页 SEO 元信息与结构化数据，移除对话首页等无关内容",
+      "task_type": "前台前端开发",
+      "estimated_hours": 6,
+      "priority": "P0",
+      "dependencies": [],
+      "deliverables": [
+        "app/pages/index.vue 五栏项目工作台首页",
+        "app/components/WorkbenchColumn.vue 工作台列组件",
+        "tests/home.spec.js 五栏布局与 SEO 的 Playwright 用例"
+      ],
+      "acceptance_criteria": [
+        "pnpm generate 通过且首页 HTML 含 title、description、H1、OG 与 JSON-LD",
+        "390/768/1440 三档无横向溢出且无控制台报错",
+        "首页 Playwright 用例全部通过"
+      ],
+      "status": "已完成",
+      "prd_reference": "首页"
+    }
+  ]
+}
